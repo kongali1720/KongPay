@@ -239,4 +239,49 @@ Support with 💸 so I can buy ☕ and keep being 🔥!
 "Because being a hacker of hearts isn’t just about code… it’s about caring." 🖤
 
 "Code with a smile, but don’t inject SQL while sulking!" 😜
+
+---
+
+## 🛠️ Cara Menjalankan Script Node.js KONGPAY
+
+Ikuti langkah mudah ini untuk menjalankan simulasi KONGPAY menggunakan Node.js:
+
+### 1. Pastikan Node.js Terinstal
+
+Cek apakah Node.js sudah terpasang dengan perintah:
+
+```bash
+node -v
+```
+
+Jika belum ada, silakan install dari [https://nodejs.org](https://nodejs.org) sesuai sistem operasi kamu.
+
+### 2. Download File Script
+
+Download file `kongpay-simulator.js` dari repo atau link yang tersedia.
+
+### 3. Jalankan Script
+
+Buka terminal atau command prompt, navigasi ke folder tempat file berada, lalu ketik:
+
+```bash
+node kongpay-simulator.js
+```
+
+### 4. Ikuti Instruksi Simulasi
+
+Script akan menampilkan menu dan simulasi transaksi digital seperti:
+
+- Transfer uang
+- Pembayaran tagihan
+- Pembayaran QR Code
+- Top-up saldo
+- Notifikasi warna-warni
+
+Nikmati pengalaman simulasi sistem pembayaran digital ala KONGPAY!
+
+---
+
+Kalau ada masalah atau ide fitur baru, jangan ragu buka issue di GitHub ya!
+
 ---
