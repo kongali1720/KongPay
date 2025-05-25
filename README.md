@@ -281,7 +281,3 @@ Script akan menampilkan menu dan simulasi transaksi digital seperti:
 Nikmati pengalaman simulasi sistem pembayaran digital ala KONGPAY!
 
 ---
-
-Kalau ada masalah atau ide fitur baru, jangan ragu buka issue di GitHub ya!
-
----
