@@ -1,6 +1,6 @@
 module github.com/kongali1720/KongPay
 
-go 1.26.5
+go 1.26
 
 require (
 	github.com/gin-gonic/gin v1.12.0
