@@ -1,283 +1,260 @@
-# KongPay
-## Kongali1720 Digital Payments
+<p align="center">
+<img src="https://github.com/kongali1720/KongWallet-Payment-Gateway-API/blob/main/kop_surat.jpg" width="100%">
+</p>
 
-## 📌 Apa itu KONGPAY?
-
-**KONGPAY** adalah sistem pembayaran digital modern yang memungkinkan pengguna melakukan transaksi secara cepat, aman, dan efisien.  
-Dirancang untuk memenuhi kebutuhan masyarakat yang semakin digital, KONGPAY mempermudah pembayaran harian — dari belanja online hingga transfer dana antar pengguna.
-
-> 💡 Visi kami: Menyederhanakan transaksi digital untuk semua orang.
-
-## 🚀 Fitur Utama KONGPAY
-
-KONGPAY dilengkapi dengan fitur-fitur canggih:
-
-- 🏦 **Transfer Instan**  
-  Kirim uang ke pengguna lain atau ke bank manapun secara real-time.
-
-- 🧾 **Pembayaran Tagihan Otomatis**  
-  Bayar listrik, air, internet, dan lebih dengan satu klik.
-
-- 📲 **Pembayaran QR Code**  
-  Scan & bayar di toko atau merchant hanya dengan smartphone.
-
-- 🛡️ **Dompet Digital Aman**  
-  Dana kamu disimpan dengan keamanan berlapis (enkripsi end-to-end).
-
-- 📊 **Riwayat Transaksi Transparan**  
-  Pantau semua aktivitas transaksi secara real-time.
-
-## 🌟 Keunggulan KONGPAY
-
-Mengapa memilih KONGPAY dibanding yang lain?
-
-- ✅ **Mudah Digunakan**  
-  Antarmuka yang intuitif dan user-friendly.
-
-- 💸 **Biaya Rendah**  
-  Bebas biaya admin untuk banyak jenis transaksi.
-
-- ⏱️ **Cepat dan Responsif**  
-  Transaksi instan dengan notifikasi real-time.
-
-- 🧩 **Integrasi Luas**  
-  Terhubung dengan banyak bank & merchant nasional.
-
-- 💬 **Dukungan 24/7**  
-  Layanan pelanggan siap bantu kapan saja, di mana saja.
-
-## 🛠️ Cara Menggunakan KONGPAY
-
-Langkah-langkah untuk mulai menggunakan KONGPAY:
-
-1. **Unduh Aplikasi**  
-   Tersedia di Google Play dan App Store.
-
-2. **Registrasi & Verifikasi**  
-   Daftar dengan nomor HP dan verifikasi identitas (KYC).
-
-3. **Top Up Saldo**  
-   Isi saldo via transfer bank, kartu kredit, atau e-wallet lain.
-
-4. **Mulai Transaksi**  
-   Kirim uang, bayar tagihan, atau scan QR Code dengan mudah.
-
-5. **Pantau Aktivitas**  
-   Cek notifikasi & histori transaksi untuk memastikan semuanya lancar.
-
-## 🧭 Visi dan Misi KONGPAY
-
-### 🎯 Visi
-
-Menjadi platform pembayaran digital terpercaya yang menjembatani masyarakat dengan teknologi finansial masa depan.
-
-### 🚀 Misi
-
-- Menyediakan layanan pembayaran digital yang **mudah, cepat, dan aman**.  
-- Menjadi bagian dari **inklusivitas keuangan** untuk semua kalangan.  
-- Mengedukasi masyarakat agar lebih **melek digital finance**.
-
-## 📬 Kontak
-
-- Email: [kongali1720@gmail.com](mailto:kongali1720@gmail.com)
-- GitHub: [kongali1720](https://github.com/kongali1720)
-
-## ☕ Dukung Aku
-
-Dukung aku agar tetap waras menulis script tengah malam!
-
-👉 [Buy Me a Coffee via PayPal](https://www.paypal.com/paypalme/bungtempong99) 👈  
-Support with 💸 so I can buy ☕ and keep being 🔥!
-
-## 📫 Let’s Connect Like Hackers
-
-- 🧙 GitHub: [kongali1720](https://github.com/kongali1720)
-- 💌 Email: [kongali1720@gmail.com](mailto:kongali1720@gmail.com)
-- 🕵️‍♂️ Site: Coming soon — stay curious...
-
-## 💻 INITIATING HUMANITY MODE...
-
-🎯 **Target Locked**: Anak-anak Pejuang Down Syndrome  
-🩺 **Status**: Butuh Dukungan  
-❤️ **Response**: Buka Hati + Klik Link = Satu Senyum Baru
-
-🧬 Mereka bukan berbeda — mereka dilahirkan untuk mengajarkan dunia tentang cinta yang murni dan kesabaran yang luar biasa.
-
-👣 Setiap langkah kecil mereka = Keajaiban besar.
-
-⚡ Bantu mereka melangkah lebih jauh, dengan caramu sendiri.
+<h1 align="center">
+KONGPAY
+</h1>
 
 <p align="center">
-  <a href="https://mydonation4ds.github.io/" target="_blank">
-    <img src="https://img.shields.io/badge/SUPPORT--NOW-%F0%9F%A7%A1-orange?style=for-the-badge&logo=heart" />
-  </a>
+<b>Autonomous Digital Financial Infrastructure</b><br>
+Open Source • Enterprise Ready • API First • Cloud Native
+</p>
+
+<p align="center">
+
+<img src="https://img.shields.io/github/stars/kongali1720/KongPay?style=for-the-badge&logo=github&color=FFD700">
+<img src="https://img.shields.io/github/forks/kongali1720/KongPay?style=for-the-badge&logo=github&color=0EA5E9">
+<img src="https://img.shields.io/github/watchers/kongali1720/KongPay?style=for-the-badge&logo=github&color=8B5CF6">
+
+</p>
+
+<p align="center">
+
+<img src="https://img.shields.io/github/license/kongali1720/KongPay?style=for-the-badge&color=22C55E">
+<img src="https://img.shields.io/github/last-commit/kongali1720/KongPay?style=for-the-badge&color=EF4444">
+<img src="https://img.shields.io/github/repo-size/kongali1720/KongPay?style=for-the-badge&color=F97316">
+
+</p>
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/Open%20Source-Yes-success?style=for-the-badge">
+<img src="https://img.shields.io/badge/Enterprise-Ready-blue?style=for-the-badge">
+<img src="https://img.shields.io/badge/API-REST-orange?style=for-the-badge">
+<img src="https://img.shields.io/badge/Docker-Supported-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/Kubernetes-Ready-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white">
+
+</p>
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi&logoColor=white">
+<img src="https://img.shields.io/badge/Node.js-Runtime-339933?style=for-the-badge&logo=node.js&logoColor=white">
+<img src="https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
+<img src="https://img.shields.io/badge/Redis-Cache-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img src="https://img.shields.io/badge/Cloud-Native-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white">
+
+</p>
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/Security-AES--256-success?style=for-the-badge">
+<img src="https://img.shields.io/badge/TLS-1.3-blue?style=for-the-badge">
+<img src="https://img.shields.io/badge/JWT-Authentication-orange?style=for-the-badge">
+<img src="https://img.shields.io/badge/OAuth2-Ready-purple?style=for-the-badge">
+<img src="https://img.shields.io/badge/RBAC-Enabled-red?style=for-the-badge">
+
 </p>
 
 ---
-"Karena jadi hacker hati bukan cuma soal kode... tapi juga soal peduli." 🖤
 
-"Ngoding boleh sambil senyum, asal jangan inject SQL sambil ngambek!" 😜
+# 🚀 Executive Summary
+
+**KongPay** is an open-source digital financial infrastructure project designed to provide modular, secure, and scalable payment services for developers, startups, enterprises, and research communities.
+
+Rather than being a single payment application, KongPay serves as a collection of interoperable services that simplify the development of modern financial platforms.
+
+The project follows an **API-first**, **cloud-native**, and **microservices-oriented** approach, enabling organizations to integrate digital payments, wallet services, merchant management, settlement workflows, and financial APIs into their own ecosystems.
+
+Our long-term vision is to build a flexible platform that encourages collaboration, transparency, and innovation in digital financial technology.
+
+# 🌍 Why KongPay?
+
+Digital payment ecosystems are becoming increasingly complex. Businesses often need to integrate multiple vendors, payment gateways, authentication providers, and settlement systems before they can launch reliable financial services.
+
+KongPay aims to reduce this complexity by providing a modular platform where financial capabilities can be developed, extended, and integrated through standardized APIs.
+
+The project emphasizes:
+
+- Simplicity
+- Security
+- Scalability
+- Developer Experience
+- Open Collaboration
+
+
+# 🎯 Project Goals
+
+The primary objectives of KongPay are to:
+
+- Build reusable financial service components.
+- Encourage open-source collaboration.
+- Simplify payment integration.
+- Provide developer-friendly APIs.
+- Support secure authentication and authorization.
+- Promote transparent software architecture.
+- Enable scalable deployment in cloud environments.
+
+
+# 🏗 Architecture Philosophy
+
+KongPay follows modern software engineering principles:
+
+- API-First Design
+- Service-Oriented Architecture
+- Cloud-Native Deployment
+- Stateless Backend Services
+- Modular Components
+- Container-Based Infrastructure
+- Infrastructure as Code
+- Continuous Integration & Continuous Delivery (CI/CD)
+
+These principles make the project easier to maintain, test, and extend over time.
+
+# 🧩 Core Components
+
+KongPay is organized into independent modules that can evolve separately while working together as a cohesive platform.
+
+| Component | Description |
+|------------|-------------|
+| Authentication | Identity and access management |
+| Wallet | Digital balance management |
+| Merchant | Merchant onboarding and configuration |
+| Payments | Payment processing workflows |
+| Settlement | Settlement orchestration |
+| Notifications | Event-driven notifications |
+| Reporting | Financial reporting interfaces |
+| Audit | Activity logging and traceability |
+| API Gateway | Unified API access layer |
+
+# ⚙ Technology Stack
+
+| Layer | Technologies |
+|---------|-------------|
+| Backend | FastAPI, Node.js |
+| Database | PostgreSQL, Redis |
+| API | RESTful APIs |
+| Infrastructure | Docker |
+| Documentation | OpenAPI |
+| Version Control | Git & GitHub |
+
+# 🔒 Security Principles
+
+Security is considered throughout the software development lifecycle.
+
+The project promotes:
+
+- Secure authentication
+- Role-based authorization
+- HTTPS deployment
+- Input validation
+- Audit logging
+- Secret management
+- Dependency management
+- Secure coding practices
+
+Security implementations evolve as the project grows.
+
+# 📂 Repository Structure
+
+```
+kongpay/
+├── api/
+├── backend/
+├── docs/
+├── docker/
+├── scripts/
+├── tests/
+├── assets/
+├── examples/
+└── README.md
+```
+
+# 🚀 Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/kongali1720/KongPay.git
+```
+
+Navigate into the project:
+
+```bash
+cd KongPay
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm start
+```
+
 ---
-ENGLISH VERSION
----
-# KongPay
-## Kongali1720 Digital Payments
-
-## 📌 What is KONGPAY?
-
-**KONGPAY** is a modern digital payment system that enables users to conduct transactions quickly, securely, and efficiently.  
-Designed to meet the needs of an increasingly digital society, KONGPAY simplifies daily payments — from online shopping to peer-to-peer transfers.
-
-> 💡 Our vision: Simplifying digital transactions for everyone.
-
-## 🚀 Key Features of KONGPAY
-
-KONGPAY is equipped with cutting-edge features:
-
-- 🏦 **Instant Transfers**  
-  Send money to other users or any bank in real-time.
-
-- 🧾 **Automated Bill Payments**  
-  Pay electricity, water, internet, and more with a single click.
-
-- 📲 **QR Code Payments**  
-  Scan & pay at stores or merchants using just your smartphone.
-
-- 🛡️ **Secure Digital Wallet**  
-  Your funds are protected with multi-layered security (end-to-end encryption).
-
-- 📊 **Transparent Transaction History**  
-  Monitor all transaction activities in real-time.
-
-## 🌟 Why Choose KONGPAY?
-
-What sets KONGPAY apart from the rest?
-
-- ✅ **User-Friendly**  
-  Intuitive and easy-to-use interface.
-
-- 💸 **Low Fees**  
-  Free administrative fees for many transaction types.
-
-- ⏱️ **Fast and Responsive**  
-  Instant transactions with real-time notifications.
-
-- 🧩 **Wide Integration**  
-  Connected with numerous banks and national merchants.
-
-- 💬 **24/7 Support**  
-  Customer service ready to assist anytime, anywhere.
-
-## 🛠️ How to Use KONGPAY
-
-Steps to start using KONGPAY:
-
-1. **Download the App**  
-   Available on Google Play and the App Store.
-
-2. **Register & Verify**  
-   Sign up with your phone number and complete identity verification (KYC).
-
-3. **Top Up Balance**  
-   Add funds via bank transfer, credit card, or other e-wallets.
-
-4. **Start Transacting**  
-   Send money, pay bills, or scan QR codes effortlessly.
-
-5. **Monitor Activity**  
-   Check notifications and transaction history to ensure everything runs smoothly.
-
-## 🧭 Vision and Mission of KONGPAY
-
-### 🎯 Vision
-
-To become a trusted digital payment platform that bridges society with the future of financial technology.
-
-### 🚀 Mission
-
-- Provide **easy, fast, and secure** digital payment services.  
-- Promote **financial inclusivity** for all communities.  
-- Educate the public to be more **digitally financially literate**.
-
-## 📬 Contact
-
-- Email: [kongali1720@gmail.com](mailto:kongali1720@gmail.com)
-- GitHub: [kongali1720](https://github.com/kongali1720)
-
-## ☕ Support Me
-
-Support me to stay sane writing scripts at midnight!
-
-👉 [Buy Me a Coffee via PayPal](https://www.paypal.com/paypalme/bungtempong99) 👈  
-Support with 💸 so I can buy ☕ and keep being 🔥!
-
-## 📫 Let’s Connect Like Hackers
-
-- 🧙 GitHub: [kongali1720](https://github.com/kongali1720)
-- 💌 Email: [kongali1720@gmail.com](mailto:kongali1720@gmail.com)
-- 🕵️‍♂️ Site: Coming soon — stay curious...
-
-## 💻 INITIATING HUMANITY MODE...
-
-🎯 **Target Locked**: Down Syndrome Warriors  
-🩺 **Status**: In Need of Support  
-❤️ **Response**: Open Your Heart + Click the Link = A New Smile
-
-🧬 They are not different — they were born to teach the world about pure love and extraordinary patience.
-
-👣 Every small step they take = A great miracle.
-
-⚡ Help them go further, in your own way.
 
 <p align="center">
-  <a href="https://mydonation4ds.github.io/" target="_blank">
-    <img src="https://img.shields.io/badge/SUPPORT--NOW-%F0%9F%A7%A1-orange?style=for-the-badge&logo=heart" />
-  </a>
+
+<a href="https://github.com/kongali1720/KongPay/stargazers">
+<img src="https://img.shields.io/badge/⭐-Star%20Repository-FFD700?style=for-the-badge">
+</a>
+
+<a href="https://github.com/kongali1720/KongPay/fork">
+<img src="https://img.shields.io/badge/🍴-Fork-0EA5E9?style=for-the-badge">
+</a>
+
+<a href="https://github.com/kongali1720/KongPay/issues">
+<img src="https://img.shields.io/badge/🐞-Issues-EF4444?style=for-the-badge">
+</a>
+
+<a href="https://github.com/kongali1720/KongPay/pulls">
+<img src="https://img.shields.io/badge/🚀-Pull_Request-22C55E?style=for-the-badge">
+</a>
+
 </p>
 
----
-"Because being a hacker of hearts isn’t just about code… it’s about caring." 🖤
+<h1 align="center">❤️ Support KongPay</h1>
 
-"Code with a smile, but don’t inject SQL while sulking!" 😜
+<p align="center">
+<b>
+Help accelerate the development of an open, secure, and modern financial infrastructure.
+</b>
+</p>
 
----
+<br>
 
-## 🛠️ Cara Menjalankan Script Node.js KONGPAY
+<p align="center">
+If <b>KongPay</b> has contributed to your learning, research, or development journey,
+please consider supporting the project.
+</p>
 
-Ikuti langkah mudah ini untuk menjalankan simulasi KONGPAY menggunakan Node.js:
+<p align="center">
+Every contribution helps improve documentation, security, infrastructure,
+security research, and new features.
+</p>
 
-### 1. Pastikan Node.js Terinstal
+<br>
 
-Cek apakah Node.js sudah terpasang dengan perintah:
+<p align="center">
+<a href="https://www.paypal.com/paypalme/bungtempong99">
+<img src="https://img.shields.io/badge/☕-Support_Development-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=000000">
+</a>
+</p>
 
-```bash
-node -v
-```
+<br>
 
-Jika belum ada, silakan install dari [https://nodejs.org](https://nodejs.org) sesuai sistem operasi kamu.
+<p align="center">
+Made with ❤️ by <b>KONGALI1720</b>
+</p>
 
-### 2. Download File Script
-
-Download file `kongpay-simulator.js` dari repo atau link yang tersedia.
-
-### 3. Jalankan Script
-
-Buka terminal atau command prompt, navigasi ke folder tempat file berada, lalu ketik:
-
-```bash
-node kongpay-simulator.js
-```
-
-### 4. Ikuti Instruksi Simulasi
-
-Script akan menampilkan menu dan simulasi transaksi digital seperti:
-
-- Transfer uang
-- Pembayaran tagihan
-- Pembayaran QR Code
-- Top-up saldo
-- Notifikasi warna-warni
-
-Nikmati pengalaman simulasi sistem pembayaran digital ala KONGPAY!
+<p align="center">
+<i>Building the next generation of Digital Financial Infrastructure.</i>
+</p>
 
 ---
