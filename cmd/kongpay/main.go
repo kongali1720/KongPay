@@ -1,28 +1,25 @@
 package main
 
 import (
-	"net/http"
+	"log"
 
-	"github.com/gin-gonic/gin"
+	"github.com/kongali1720/KongPay/internal/config"
+	"github.com/kongali1720/KongPay/internal/router"
 )
 
 func main() {
-	router := gin.Default()
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"project": "KongPay",
-			"version": "1.0.0",
-			"status":  "running",
-			"message": "Welcome to KongPay API",
-		})
-	})
+	cfg := config.Load()
 
-	router.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": "healthy",
-		})
-	})
+	r := router.Setup()
 
-	router.Run(":8080")
+	log.Printf("🚀 %s started on :%s (%s)",
+		cfg.AppName,
+		cfg.Port,
+		cfg.Env,
+	)
+
+	if err := r.Run(":" + cfg.Port); err != nil {
+		log.Fatal(err)
+	}
 }
