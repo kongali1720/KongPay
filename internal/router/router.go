@@ -14,5 +14,10 @@ func Setup() *gin.Engine {
 
 	r.GET("/health", handlers.Health)
 
+	api := r.Group("/api/v1")
+	{
+		api.POST("/wallets", handlers.CreateWallet)
+	}
+
 	return r
 }

@@ -40,11 +40,8 @@ func Connect() error {
 }
 
 func Close() {
-
 	if DB != nil {
-
 		DB.Close(context.Background())
-
 		log.Println("🛑 PostgreSQL Closed")
 	}
 }
