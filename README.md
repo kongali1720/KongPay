@@ -11,8 +11,13 @@ KONGPAY
 </h1>
 
 <p align="center">
-<b>Autonomous Digital Financial Infrastructure</b><br>
-Open Source • API First • Cloud Native • Modular Architecture
+<b>Enterprise Digital Payment Infrastructure</b><br>
+Open Source • API First • Cloud Native • Built for Modern Financial Applications
+</p>
+
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/kongali1720/KongPay/main/bi-fast-banner.png" width="100%">
 </p>
 
 ---
