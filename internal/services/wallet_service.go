@@ -40,3 +40,34 @@ func (s *WalletService) CreateWallet(
 
 	return wallet, nil
 }
+
+func (s *WalletService) GetWallet(
+	ctx context.Context,
+	id uuid.UUID,
+) (*models.Wallet, error) {
+
+	return s.Repo.GetWalletByID(ctx, id)
+}
+
+func (s *WalletService) ListWallets(
+	ctx context.Context,
+) ([]models.Wallet, error) {
+
+	return s.Repo.ListWallets(ctx)
+}
+
+func (s *WalletService) UpdateWallet(
+	ctx context.Context,
+	wallet *models.Wallet,
+) error {
+
+	return s.Repo.UpdateWallet(ctx, wallet)
+}
+
+func (s *WalletService) DeleteWallet(
+	ctx context.Context,
+	id uuid.UUID,
+) error {
+
+	return s.Repo.DeleteWallet(ctx, id)
+}

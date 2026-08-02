@@ -2,7 +2,6 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-
 	"github.com/jackc/pgx/v5"
 
 	"github.com/kongali1720/KongPay/internal/handlers"
@@ -24,7 +23,14 @@ func Setup(db *pgx.Conn) *gin.Engine {
 	api := r.Group("/api/v1")
 	{
 		api.POST("/wallets", handler.CreateWallet)
+
+		api.GET("/wallets", handler.ListWallets)
+
 		api.GET("/wallets/:id", handler.GetWallet)
+
+		api.PUT("/wallets/:id", handler.UpdateWallet)
+
+		api.DELETE("/wallets/:id", handler.DeleteWallet)
 	}
 
 	return r
