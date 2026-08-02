@@ -2,10 +2,6 @@
 <img src="https://github.com/kongali1720/KongWallet-Payment-Gateway-API/blob/main/kop_surat.jpg" width="100%">
 </p>
 
-<p align="center">
-<img src="https://raw.githubusercontent.com/kongali1720/KongPay/main/KP-Logo-01.png" width="100%">
-</p>
-
 <h1 align="center">
 KONGPAY
 </h1>
