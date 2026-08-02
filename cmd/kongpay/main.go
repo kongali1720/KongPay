@@ -18,7 +18,7 @@ func main() {
 
 	defer database.Close()
 
-	r := router.Setup()
+	r := router.Setup(database.DB)
 
 	log.Printf(
 		"🚀 %s running on :%s (%s)",
