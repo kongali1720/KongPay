@@ -2,6 +2,10 @@
 <img src="https://github.com/kongali1720/KongWallet-Payment-Gateway-API/blob/main/kop_surat.jpg" width="100%">
 </p>
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/kongali1720/KongPay/main/KP-Logo-01.png" width="100%">
+</p>
+
 <h1 align="center">
 KONGPAY
 </h1>
@@ -29,31 +33,21 @@ Open Source • Enterprise Ready • API First • Cloud Native
 
 <p align="center">
 
+<img src="https://img.shields.io/badge/Go-1.26-00ADD8?style=for-the-badge&logo=go&logoColor=white">
+<img src="https://img.shields.io/badge/Gin-Web_Framework-008ECF?style=for-the-badge">
+<img src="https://img.shields.io/badge/PostgreSQL-17-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
+<img src="https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+
+</p>
+
+<p align="center">
+
 <img src="https://img.shields.io/badge/Open%20Source-Yes-success?style=for-the-badge">
 <img src="https://img.shields.io/badge/Enterprise-Ready-blue?style=for-the-badge">
-<img src="https://img.shields.io/badge/API-REST-orange?style=for-the-badge">
-<img src="https://img.shields.io/badge/Docker-Supported-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-<img src="https://img.shields.io/badge/Kubernetes-Ready-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white">
-
-</p>
-
-<p align="center">
-
-<img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi&logoColor=white">
-<img src="https://img.shields.io/badge/Node.js-Runtime-339933?style=for-the-badge&logo=node.js&logoColor=white">
-<img src="https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
-<img src="https://img.shields.io/badge/Redis-Cache-DC382D?style=for-the-badge&logo=redis&logoColor=white">
-<img src="https://img.shields.io/badge/Cloud-Native-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white">
-
-</p>
-
-<p align="center">
-
-<img src="https://img.shields.io/badge/Security-AES--256-success?style=for-the-badge">
-<img src="https://img.shields.io/badge/TLS-1.3-blue?style=for-the-badge">
-<img src="https://img.shields.io/badge/JWT-Authentication-orange?style=for-the-badge">
-<img src="https://img.shields.io/badge/OAuth2-Ready-purple?style=for-the-badge">
-<img src="https://img.shields.io/badge/RBAC-Enabled-red?style=for-the-badge">
+<img src="https://img.shields.io/badge/REST-API-orange?style=for-the-badge">
+<img src="https://img.shields.io/badge/GitHub_Actions-CI-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
+<img src="https://img.shields.io/badge/Clean-Architecture-success?style=for-the-badge">
 
 </p>
 
@@ -61,141 +55,281 @@ Open Source • Enterprise Ready • API First • Cloud Native
 
 # 🚀 Executive Summary
 
-**KongPay** is an open-source digital financial infrastructure project designed to provide modular, secure, and scalable payment services for developers, startups, enterprises, and research communities.
+**KongPay** is an open-source payment infrastructure built with **Go**, designed to provide a modular, scalable, and secure foundation for modern financial applications.
 
-Rather than being a single payment application, KongPay serves as a collection of interoperable services that simplify the development of modern financial platforms.
+The project follows a clean architecture consisting of **Handlers**, **Services**, **Repositories**, and **PostgreSQL**, enabling developers to build digital wallets, merchant systems, payment gateways, settlement services, and financial APIs on top of a production-ready backend.
 
-The project follows an **API-first**, **cloud-native**, and **microservices-oriented** approach, enabling organizations to integrate digital payments, wallet services, merchant management, settlement workflows, and financial APIs into their own ecosystems.
+KongPay is designed around modern engineering principles:
 
-Our long-term vision is to build a flexible platform that encourages collaboration, transparency, and innovation in digital financial technology.
+- API First
+- Clean Architecture
+- Repository Pattern
+- Dependency Injection
+- PostgreSQL Persistence
+- Redis Caching
+- Docker Deployment
+- GitHub Actions CI
+- Open Source Collaboration
+
+---
 
 # 🌍 Why KongPay?
 
-Digital payment ecosystems are becoming increasingly complex. Businesses often need to integrate multiple vendors, payment gateways, authentication providers, and settlement systems before they can launch reliable financial services.
+Modern payment ecosystems require scalable and secure backend infrastructure.
 
-KongPay aims to reduce this complexity by providing a modular platform where financial capabilities can be developed, extended, and integrated through standardized APIs.
+KongPay aims to provide reusable financial service components that developers and organizations can extend without building everything from scratch.
 
-The project emphasizes:
+The platform focuses on:
 
-- Simplicity
 - Security
 - Scalability
+- Performance
+- Simplicity
 - Developer Experience
-- Open Collaboration
+- Maintainability
 
+---
 
 # 🎯 Project Goals
 
-The primary objectives of KongPay are to:
+- Build reusable payment infrastructure
+- Develop a production-ready Wallet Service
+- Provide Merchant APIs
+- Build Transaction Ledger
+- Develop Settlement Engine
+- Support JWT Authentication
+- Support QRIS & Virtual Account integration
+- Encourage Open Source Collaboration
 
-- Build reusable financial service components.
-- Encourage open-source collaboration.
-- Simplify payment integration.
-- Provide developer-friendly APIs.
-- Support secure authentication and authorization.
-- Promote transparent software architecture.
-- Enable scalable deployment in cloud environments.
+---
 
+# 🏗 Architecture
 
-# 🏗 Architecture Philosophy
+```
+                Internet
+                    │
+                    ▼
+              REST API (Gin)
+                    │
+        ┌───────────┴───────────┐
+        ▼                       ▼
+   Wallet Handler         Merchant Handler
+        │                       │
+        ▼                       ▼
+   Wallet Service        Merchant Service
+        │                       │
+        └───────────┬───────────┘
+                    ▼
+             Repository Layer
+                    │
+        ┌───────────┴───────────┐
+        ▼                       ▼
+      PostgreSQL             Redis
+```
 
-KongPay follows modern software engineering principles:
+---
 
-- API-First Design
-- Service-Oriented Architecture
-- Cloud-Native Deployment
-- Stateless Backend Services
-- Modular Components
-- Container-Based Infrastructure
-- Infrastructure as Code
-- Continuous Integration & Continuous Delivery (CI/CD)
+# 🧩 Current Features
 
-These principles make the project easier to maintain, test, and extend over time.
+- RESTful Wallet API
+- PostgreSQL Integration
+- Redis Integration
+- Docker Environment
+- Repository Pattern
+- Dependency Injection
+- UUID Support
+- GitHub Actions CI
+- Environment Configuration
+- Health Check Endpoint
 
-# 🧩 Core Components
-
-KongPay is organized into independent modules that can evolve separately while working together as a cohesive platform.
-
-| Component | Description |
-|------------|-------------|
-| Authentication | Identity and access management |
-| Wallet | Digital balance management |
-| Merchant | Merchant onboarding and configuration |
-| Payments | Payment processing workflows |
-| Settlement | Settlement orchestration |
-| Notifications | Event-driven notifications |
-| Reporting | Financial reporting interfaces |
-| Audit | Activity logging and traceability |
-| API Gateway | Unified API access layer |
+---
 
 # ⚙ Technology Stack
 
-| Layer | Technologies |
-|---------|-------------|
-| Backend | FastAPI, Node.js |
-| Database | PostgreSQL, Redis |
-| API | RESTful APIs |
-| Infrastructure | Docker |
-| Documentation | OpenAPI |
-| Version Control | Git & GitHub |
+| Layer | Technology |
+|--------|------------|
+| Language | Go 1.26 |
+| Framework | Gin |
+| Database | PostgreSQL 17 |
+| Cache | Redis 7 |
+| Driver | pgx v5 |
+| Container | Docker |
+| CI/CD | GitHub Actions |
+| API | REST |
+| Version Control | Git |
 
-# 🔒 Security Principles
-
-Security is considered throughout the software development lifecycle.
-
-The project promotes:
-
-- Secure authentication
-- Role-based authorization
-- HTTPS deployment
-- Input validation
-- Audit logging
-- Secret management
-- Dependency management
-- Secure coding practices
-
-Security implementations evolve as the project grows.
+---
 
 # 📂 Repository Structure
 
-```
+```text
 kongpay/
-├── api/
-├── backend/
-├── docs/
+│
+├── cmd/
+│   └── kongpay/
+│
+├── internal/
+│   ├── config/
+│   ├── database/
+│   ├── handlers/
+│   ├── middleware/
+│   ├── models/
+│   ├── repositories/
+│   ├── router/
+│   ├── services/
+│   └── utils/
+│
+├── migrations/
 ├── docker/
-├── scripts/
+├── docs/
 ├── tests/
-├── assets/
-├── examples/
+├── .github/
+│
+├── docker-compose.yml
+├── go.mod
+├── go.sum
 └── README.md
 ```
 
+---
+
+# 📡 REST API
+
+## Health Check
+
+```http
+GET /health
+```
+
+## Create Wallet
+
+```http
+POST /api/v1/wallets
+```
+
+## Get Wallet
+
+```http
+GET /api/v1/wallets/{id}
+```
+
+### Coming Soon
+
+- GET /wallets
+- PUT /wallets/{id}
+- DELETE /wallets/{id}
+
+---
+
 # 🚀 Getting Started
 
-Clone the repository:
+## Clone Repository
 
 ```bash
 git clone https://github.com/kongali1720/KongPay.git
-```
 
-Navigate into the project:
-
-```bash
 cd KongPay
 ```
 
-Install dependencies:
+---
+
+## Configure Environment
 
 ```bash
-npm install
+cp .env.example .env
 ```
 
-Run the development server:
+Edit `.env` as needed.
+
+---
+
+## Start Infrastructure
 
 ```bash
-npm start
+docker compose up -d
 ```
+
+---
+
+## Run KongPay
+
+```bash
+go run ./cmd/kongpay
+```
+
+---
+
+## Test Health Endpoint
+
+```bash
+curl http://localhost:8080/health
+```
+
+---
+
+## Create Wallet
+
+```bash
+curl -X POST http://localhost:8080/api/v1/wallets \
+-H "Content-Type: application/json" \
+-d '{
+  "user_id":"550e8400-e29b-41d4-a716-446655440000",
+  "currency":"IDR"
+}'
+```
+
+---
+
+# 🗺 Roadmap
+
+## Phase 1 ✅
+
+- Go Backend
+- Gin Framework
+- PostgreSQL
+- Redis
+- Docker
+- Wallet Create API
+- Wallet Persistence
+- GitHub Actions
+
+## Phase 2 🚧
+
+- Wallet CRUD
+- JWT Authentication
+- Merchant API
+
+## Phase 3
+
+- Payment Engine
+- Transaction Ledger
+- Settlement Service
+
+## Phase 4
+
+- QRIS
+- Virtual Account
+- Webhook
+- Notification Service
+
+## Phase 5
+
+- API Gateway
+- Kubernetes
+- Production Deployment
+
+---
+
+# 🏆 Project Milestones
+
+- ✅ Docker Infrastructure
+- ✅ PostgreSQL Integration
+- ✅ Redis Integration
+- ✅ Repository Pattern
+- ✅ Service Layer
+- ✅ Dependency Injection
+- ✅ Wallet Persistence
+- ✅ GitHub Actions CI
 
 ---
 
@@ -219,42 +353,38 @@ npm start
 
 </p>
 
-<h1 align="center">❤️ Support KongPay</h1>
+---
+
+# ❤️ Support KongPay
+
+If KongPay helps your learning, research, or development journey, consider supporting the project.
+
+Every contribution helps improve:
+
+- Documentation
+- Infrastructure
+- Security
+- Developer Experience
+- Open Source Sustainability
 
 <p align="center">
-<b>
-Help accelerate the development of an open, secure, and modern financial infrastructure.
-</b>
-</p>
 
-<br>
-
-<p align="center">
-If <b>KongPay</b> has contributed to your learning, research, or development journey,
-please consider supporting the project.
-</p>
-
-<p align="center">
-Every contribution helps improve documentation, security, infrastructure,
-security research, and new features.
-</p>
-
-<br>
-
-<p align="center">
 <a href="https://www.paypal.com/paypalme/bungtempong99">
 <img src="https://img.shields.io/badge/☕-Support_Development-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=000000">
 </a>
-</p>
 
-<br>
-
-<p align="center">
-Made with ❤️ by <b>KONGALI1720</b>
-</p>
-
-<p align="center">
-<i>Building the next generation of Digital Financial Infrastructure.</i>
 </p>
 
 ---
+
+<h2 align="center">
+Built with Go ❤️ by KONGALI1720
+</h2>
+
+<p align="center">
+Autonomous Digital Financial Infrastructure
+</p>
+
+<p align="center">
+Go • Gin • PostgreSQL • Redis • Docker • GitHub Actions
+</p>
