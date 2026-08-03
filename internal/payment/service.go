@@ -10,10 +10,10 @@ import (
 )
 
 type Service struct {
-	DB          *pgx.Conn
-	WalletRepo  *repositories.WalletRepository
-	TxRepo      *repositories.TransactionRepository
-	LedgerRepo  *repositories.LedgerRepository
+	DB         *pgx.Conn
+	WalletRepo *repositories.WalletRepository
+	TxRepo     *repositories.TransactionRepository
+	LedgerRepo *repositories.LedgerRepository
 }
 
 func NewService(

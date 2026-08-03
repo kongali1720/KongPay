@@ -13,9 +13,9 @@ func Version(c *gin.Context) {
 		"message": "Version information",
 		"data": gin.H{
 			"application": "KongPay",
-			"version": metadata.Version(),
-			"build": metadata.Build(),
-			"codename": metadata.Codename(),
+			"version":     metadata.Version(),
+			"build":       metadata.Build(),
+			"codename":    metadata.Codename(),
 		},
 	})
 }
