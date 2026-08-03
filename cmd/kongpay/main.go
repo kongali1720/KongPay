@@ -12,20 +12,16 @@ func main() {
 
 	cfg := config.Load()
 
-	if err := database.Connect(); err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Starting %s...", cfg.AppName)
 
+	if err := database.Connect(); err != nil {
+		log.Fatalf("Database connection failed: %v", err)
+	}
 	defer database.Close()
 
 	r := router.Setup(database.DB)
 
-	log.Printf(
-		"🚀 %s running on :%s (%s)",
-		cfg.AppName,
-		cfg.Port,
-		cfg.Env,
-	)
+	log.Printf("Listening on :%s", cfg.Port)
 
 	if err := r.Run(":" + cfg.Port); err != nil {
 		log.Fatal(err)

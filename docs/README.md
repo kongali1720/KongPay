@@ -1,14 +1,16 @@
 # 📚 KongPay Documentation
 
-Welcome to the official documentation for **KongPay**.
+Welcome to the official technical documentation for **KongPay**.
 
-KongPay is an open-source digital financial infrastructure platform designed for secure, scalable, and enterprise-grade payment systems. This documentation provides everything developers, architects, contributors, and operators need to understand, deploy, and extend the platform.
+KongPay is an open-source digital financial infrastructure project focused on building secure, modular, and scalable financial services. This documentation is intended for developers, contributors, system architects, DevOps engineers, and organizations interested in understanding or extending the platform.
+
+The documentation is organized to guide readers from high-level architectural concepts to implementation details, deployment strategies, security practices, and contribution workflows.
 
 ---
 
 # Documentation Structure
 
-## 🚀 Getting Started
+## Getting Started
 
 | Document | Description |
 |----------|-------------|
@@ -18,7 +20,7 @@ KongPay is an open-source digital financial infrastructure platform designed for
 
 ---
 
-## 🏗️ System Design
+## System Design
 
 | Document | Description |
 |----------|-------------|
@@ -30,7 +32,7 @@ KongPay is an open-source digital financial infrastructure platform designed for
 
 ---
 
-## 🔌 API Documentation
+## API Documentation
 
 | Document | Description |
 |----------|-------------|
@@ -40,59 +42,41 @@ KongPay is an open-source digital financial infrastructure platform designed for
 
 ---
 
-## 🐳 Infrastructure
+## Infrastructure
 
 | Document | Description |
 |----------|-------------|
-| docker.md | Docker deployment |
 | deployment.md | Production deployment |
-| database.md | Database architecture |
-| monitoring.md | Monitoring strategy |
+| security.md | Platform security guide |
 
 ---
 
-## 🔐 Security
+## Project Planning
 
 | Document | Description |
 |----------|-------------|
-| security.md | Security overview |
-| threat-model.md | Threat modeling |
-| audit-logging.md | Audit logging |
-
----
-
-## 🌍 Community
-
-| Document | Description |
-|----------|-------------|
-| roadmap.md | Future roadmap |
-| contributing.md | Contribution guide |
-| code-of-conduct.md | Community standards |
-| changelog.md | Release history |
-| faq.md | Frequently asked questions |
-| glossary.md | Technical glossary |
+| roadmap.md | Development roadmap |
 
 ---
 
 # Documentation Principles
 
-The KongPay documentation follows these principles:
+The KongPay documentation follows several core principles:
 
 - Accuracy
 - Consistency
 - Security
-- Transparency
 - Simplicity
 - Maintainability
 - Developer Experience
 
-Every document should prioritize clarity, maintainability, and implementation-focused guidance.
+Every document should prioritize clarity over complexity while remaining technically accurate and implementation-focused.
 
 ---
 
 # Intended Audience
 
-This documentation is intended for:
+This documentation is designed for:
 
 - Software Engineers
 - Backend Developers
@@ -107,14 +91,20 @@ This documentation is intended for:
 
 # Documentation Status
 
-| Section | Status |
-|---------|--------|
-| Getting Started | 🚧 In Progress |
-| Architecture | 🚧 In Progress |
-| API | 🚧 In Progress |
-| Infrastructure | 🚧 In Progress |
-| Security | 🚧 In Progress |
-| Community | 🚧 In Progress |
+| Document | Status |
+|----------|--------|
+| README | ✅ |
+| Architecture | 🚧 |
+| System Overview | 🚧 |
+| Payment Lifecycle | 🚧 |
+| Wallet | 🚧 |
+| Merchant | 🚧 |
+| Authentication | 🚧 |
+| Authorization | 🚧 |
+| API Reference | 🚧 |
+| Deployment | 🚧 |
+| Security | 🚧 |
+| Roadmap | 🚧 |
 
 ---
 
@@ -122,7 +112,7 @@ This documentation is intended for:
 
 Documentation improvements are always welcome.
 
-If you find missing information, technical inaccuracies, or opportunities to improve clarity, please open an Issue or submit a Pull Request.
+If you discover missing information, technical inaccuracies, or opportunities to improve readability, please open an Issue or submit a Pull Request.
 
 ---
 
