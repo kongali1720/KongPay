@@ -13,24 +13,33 @@ func Setup(db *pgx.Conn) *gin.Engine {
 
 	r := gin.Default()
 
-	repo := repositories.NewWalletRepository(db)
-	service := services.NewWalletService(repo)
-	handler := handlers.NewWalletHandler(service)
+	// Wallet
+	walletRepo := repositories.NewWalletRepository(db)
+	walletService := services.NewWalletService(walletRepo)
+	walletHandler := handlers.NewWalletHandler(walletService)
 
+	// User / Auth
+	userRepo := repositories.NewRepository(db)
+	userService := services.NewService(userRepo, walletRepo)
+	authHandler := handlers.NewAuthHandler(userService)
+
+	// Public
 	r.GET("/", handlers.Home)
 	r.GET("/health", handlers.Health)
 
 	api := r.Group("/api/v1")
 	{
-		api.POST("/wallets", handler.CreateWallet)
+		// Authentication
+		api.POST("/auth/register", authHandler.Register)
+		api.POST("/auth/login", authHandler.Login)
+		api.GET("/auth/profile", authHandler.Profile)
 
-		api.GET("/wallets", handler.ListWallets)
-
-		api.GET("/wallets/:id", handler.GetWallet)
-
-		api.PUT("/wallets/:id", handler.UpdateWallet)
-
-		api.DELETE("/wallets/:id", handler.DeleteWallet)
+		// Wallet
+		api.POST("/wallets", walletHandler.CreateWallet)
+		api.GET("/wallets", walletHandler.ListWallets)
+		api.GET("/wallets/:id", walletHandler.GetWallet)
+		api.PUT("/wallets/:id", walletHandler.UpdateWallet)
+		api.DELETE("/wallets/:id", walletHandler.DeleteWallet)
 	}
 
 	return r

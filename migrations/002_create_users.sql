@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS users (
+
+    id UUID PRIMARY KEY,
+
+    full_name VARCHAR(150) NOT NULL,
+
+    email VARCHAR(255) UNIQUE NOT NULL,
+
+    password_hash TEXT NOT NULL,
+
+    phone VARCHAR(30),
+
+    status VARCHAR(20) DEFAULT 'ACTIVE',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
