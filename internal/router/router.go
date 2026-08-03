@@ -6,6 +6,7 @@ import (
 
 	"github.com/kongali1720/KongPay/internal/handlers"
 	"github.com/kongali1720/KongPay/internal/payment"
+	"github.com/kongali1720/KongPay/internal/reconciliation"
 	"github.com/kongali1720/KongPay/internal/repositories"
 	"github.com/kongali1720/KongPay/internal/services"
 	"github.com/kongali1720/KongPay/internal/settlement"
@@ -65,6 +66,17 @@ func Setup(db *pgx.Conn) *gin.Engine {
 		settlementEventRepo,
 	)
 
+	// Reconciliation Engine
+	reconciliationRepo := repositories.NewSettlementReconciliationRepository(db)
+
+	reconciliationService := reconciliation.NewService(
+		reconciliationRepo,
+	)
+
+	reconciliationHandler := handlers.NewReconciliationHandler(
+		reconciliationService,
+	)
+
 	// Public
 	r.GET("/", handlers.Home)
 	r.GET("/health", handlers.Health)
@@ -98,6 +110,9 @@ func Setup(db *pgx.Conn) *gin.Engine {
 		api.GET("/settlements/:id", settlementHandler.Get)
 		api.POST("/settlements/:id/process", settlementHandler.Process)
 		api.GET("/settlements/:id/events", settlementEventHandler.List)
+
+		// Reconciliation
+		api.POST("/settlements/:id/reconcile", reconciliationHandler.Reconcile)
 	}
 
 	return r
