@@ -8,6 +8,7 @@ import (
 	"github.com/kongali1720/KongPay/internal/payment"
 	"github.com/kongali1720/KongPay/internal/repositories"
 	"github.com/kongali1720/KongPay/internal/services"
+	"github.com/kongali1720/KongPay/internal/settlement"
 )
 
 func Setup(db *pgx.Conn) *gin.Engine {
@@ -19,7 +20,7 @@ func Setup(db *pgx.Conn) *gin.Engine {
 	walletService := services.NewWalletService(walletRepo)
 	walletHandler := handlers.NewWalletHandler(walletService)
 
-	// User / Auth
+	// Auth
 	userRepo := repositories.NewRepository(db)
 	userService := services.NewService(userRepo, walletRepo)
 	authHandler := handlers.NewAuthHandler(userService)
@@ -37,13 +38,24 @@ func Setup(db *pgx.Conn) *gin.Engine {
 
 	paymentHandler := handlers.NewPaymentHandler(paymentService)
 
-	// Transaction History
+	// Transaction
 	transactionHandler := handlers.NewTransactionHandler(txRepo)
 
-	// Ledger Audit
+	// Ledger
 	ledgerHandler := handlers.NewLedgerHandler(
 		db,
 		ledgerRepo,
+	)
+
+	// Settlement
+	settlementRepo := repositories.NewSettlementRepository(db)
+
+	settlementService := settlement.NewService(
+		settlementRepo,
+	)
+
+	settlementHandler := handlers.NewSettlementHandler(
+		settlementService,
 	)
 
 	// Public
@@ -52,7 +64,7 @@ func Setup(db *pgx.Conn) *gin.Engine {
 
 	api := r.Group("/api/v1")
 	{
-		// Authentication
+		// Auth
 		api.POST("/auth/register", authHandler.Register)
 		api.POST("/auth/login", authHandler.Login)
 		api.GET("/auth/profile", authHandler.Profile)
@@ -67,11 +79,14 @@ func Setup(db *pgx.Conn) *gin.Engine {
 		// Payment
 		api.POST("/transfers", paymentHandler.Transfer)
 
-		// Transaction History
+		// Transaction
 		api.GET("/transactions", transactionHandler.List)
 
-		// Ledger Audit
+		// Ledger
 		api.GET("/ledger/:wallet_id", ledgerHandler.ListByWallet)
+
+		// Settlement
+		api.POST("/settlements", settlementHandler.Create)
 	}
 
 	return r
