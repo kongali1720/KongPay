@@ -65,3 +65,29 @@ func (s *Service) FindByID(
 		id,
 	)
 }
+
+func (s *Service) Process(
+	ctx context.Context,
+	id uuid.UUID,
+) (*models.Settlement, error) {
+
+	settlement, err := s.Repo.FindByID(
+		ctx,
+		id,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	settlement.Status = models.SettlementProcessing
+
+	// nanti di sini masuk settlement logic
+	// reconciliation
+	// transaction matching
+	// external payout
+
+	settlement.Status = models.SettlementCompleted
+
+	return settlement, nil
+}
