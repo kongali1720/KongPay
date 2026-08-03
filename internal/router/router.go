@@ -61,12 +61,17 @@ func Setup(db *pgx.Conn) *gin.Engine {
 		settlementService,
 	)
 
+	settlementEventHandler := handlers.NewSettlementEventHandler(
+		settlementEventRepo,
+	)
+
 	// Public
 	r.GET("/", handlers.Home)
 	r.GET("/health", handlers.Health)
 
 	api := r.Group("/api/v1")
 	{
+
 		// Auth
 		api.POST("/auth/register", authHandler.Register)
 		api.POST("/auth/login", authHandler.Login)
@@ -92,6 +97,7 @@ func Setup(db *pgx.Conn) *gin.Engine {
 		api.POST("/settlements", settlementHandler.Create)
 		api.GET("/settlements/:id", settlementHandler.Get)
 		api.POST("/settlements/:id/process", settlementHandler.Process)
+		api.GET("/settlements/:id/events", settlementEventHandler.List)
 	}
 
 	return r
