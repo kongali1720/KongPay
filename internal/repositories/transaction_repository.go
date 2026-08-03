@@ -99,3 +99,56 @@ func (r *TransactionRepository) FindByID(
 
 	return &t, nil
 }
+
+func (r *TransactionRepository) List(
+	ctx context.Context,
+) ([]models.Transaction, error) {
+
+	query := `
+	SELECT
+		id,
+		reference_no,
+		sender_wallet_id,
+		receiver_wallet_id,
+		amount,
+		currency,
+		status,
+		created_at,
+		updated_at
+	FROM transactions
+	ORDER BY created_at DESC
+	`
+
+	rows, err := r.DB.Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var transactions []models.Transaction
+
+	for rows.Next() {
+
+		var t models.Transaction
+
+		err := rows.Scan(
+			&t.ID,
+			&t.ReferenceNo,
+			&t.SenderWalletID,
+			&t.ReceiverWalletID,
+			&t.Amount,
+			&t.Currency,
+			&t.Status,
+			&t.CreatedAt,
+			&t.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		transactions = append(transactions, t)
+	}
+
+	return transactions, nil
+}

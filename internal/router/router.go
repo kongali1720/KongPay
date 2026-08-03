@@ -37,6 +37,15 @@ func Setup(db *pgx.Conn) *gin.Engine {
 
 	paymentHandler := handlers.NewPaymentHandler(paymentService)
 
+	// Transaction History
+	transactionHandler := handlers.NewTransactionHandler(txRepo)
+
+	// Ledger Audit
+	ledgerHandler := handlers.NewLedgerHandler(
+		db,
+		ledgerRepo,
+	)
+
 	// Public
 	r.GET("/", handlers.Home)
 	r.GET("/health", handlers.Health)
@@ -57,6 +66,12 @@ func Setup(db *pgx.Conn) *gin.Engine {
 
 		// Payment
 		api.POST("/transfers", paymentHandler.Transfer)
+
+		// Transaction History
+		api.GET("/transactions", transactionHandler.List)
+
+		// Ledger Audit
+		api.GET("/ledger/:wallet_id", ledgerHandler.ListByWallet)
 	}
 
 	return r
