@@ -43,10 +43,27 @@ func (h *AuthHandler) Register(c *gin.Context) {
 }
 
 func (h *AuthHandler) Login(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{
-		"message": "login coming soon",
+
+	var req services.LoginRequest
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	token, user, err := h.service.Login(req)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"token": token,
+		"user": user,
 	})
 }
+
 
 func (h *AuthHandler) Profile(c *gin.Context) {
 	c.JSON(http.StatusNotImplemented, gin.H{

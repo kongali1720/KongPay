@@ -34,11 +34,6 @@ type RegisterRequest struct {
 	Currency string `json:"currency"`
 }
 
-type LoginRequest struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required"`
-}
-
 func (s *Service) Register(req RegisterRequest) (*models.User, error) {
 
 	_, err := s.userRepo.FindByEmail(req.Email)
@@ -82,27 +77,4 @@ func (s *Service) Register(req RegisterRequest) (*models.User, error) {
 	}
 
 	return user, nil
-}
-
-func (s *Service) Login(req LoginRequest) (string, *models.User, error) {
-
-	user, err := s.userRepo.FindByEmail(req.Email)
-	if err != nil {
-		return "", nil, errors.New("invalid email or password")
-	}
-
-	if err := auth.CheckPassword(user.PasswordHash, req.Password); err != nil {
-		return "", nil, errors.New("invalid email or password")
-	}
-
-	token, err := auth.GenerateToken(
-		user.ID.String(),
-		user.Email,
-		"USER",
-	)
-	if err != nil {
-		return "", nil, err
-	}
-
-	return token, user, nil
 }
