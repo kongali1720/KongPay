@@ -157,3 +157,65 @@ func (r *WalletRepository) DeleteWallet(ctx context.Context, id uuid.UUID) error
 
 	return err
 }
+
+func (r *WalletRepository) GetWalletByUserID(
+	ctx context.Context,
+	userID uuid.UUID,
+) (*models.Wallet, error) {
+
+	query := `
+	SELECT
+		id,
+		user_id,
+		balance,
+		currency,
+		status,
+		created_at,
+		updated_at
+	FROM wallets
+	WHERE user_id = $1
+	LIMIT 1
+	`
+
+	var wallet models.Wallet
+
+	err := r.DB.QueryRow(ctx, query, userID).Scan(
+		&wallet.ID,
+		&wallet.UserID,
+		&wallet.Balance,
+		&wallet.Currency,
+		&wallet.Status,
+		&wallet.CreatedAt,
+		&wallet.UpdatedAt,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &wallet, nil
+}
+
+func (r *WalletRepository) UpdateBalance(
+	ctx context.Context,
+	id uuid.UUID,
+	balance float64,
+) error {
+
+	query := `
+	UPDATE wallets
+	SET
+		balance = $2,
+		updated_at = NOW()
+	WHERE id = $1
+	`
+
+	_, err := r.DB.Exec(
+		ctx,
+		query,
+		id,
+		balance,
+	)
+
+	return err
+}
