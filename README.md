@@ -11,12 +11,9 @@ KONGPAY
 Open Source • API First • Cloud Native • Built for Modern Financial Applications
 </p>
 
-
 <p align="center">
 <img src="https://raw.githubusercontent.com/kongali1720/KongPay/main/bi-fast-banner.png" width="100%">
 </p>
-
----
 
 <p align="center">
 
@@ -55,202 +52,208 @@ Open Source • API First • Cloud Native • Built for Modern Financial Applic
 
 </p>
 
----
-
 # 🚀 Executive Summary
 
-**KongPay** is an open-source payment infrastructure built with **Go**, designed to provide a modular, scalable, and secure foundation for modern financial applications. It is designed around modular backend components that can evolve into wallet, merchant, payment, ledger, settlement, notification, and financial API services.
+**KongPay** is an open-source **digital payment infrastructure platform** built with **Go**, designed to provide a modular, scalable, and secure foundation for next-generation financial applications.
 
-The current implementation establishes a working Wallet REST API backed by PostgreSQL. The application is organized into handler, service, repository, model, database, configuration, and routing layers so that business logic and persistence concerns remain separated as the project grows.
+Rather than being a single payment application, KongPay serves as a **financial infrastructure layer** that enables developers and organizations to build modern payment ecosystems using reusable backend services.
 
-KongPay emphasizes API-first development, modularity, maintainability, database-backed persistence, containerized development infrastructure, and automated CI checks.
+The platform is architected around independently evolving modules, including:
 
-> **Development notice:** KongPay is under active development. Features marked as planned or in progress in this README should not be interpreted as production-complete financial services.
+- 💳 Wallet Infrastructure
+- 💸 Payment Processing
+- 📒 Transaction Ledger
+- 🏦 Settlement Engine
+- 🔍 Settlement Event Audit
+- 🔄 Settlement Reconciliation
+- 🛒 Merchant Services *(Roadmap)*
+- 📄 Invoice Engine *(Roadmap)*
+- 📡 Webhook Services *(Roadmap)*
 
----
+KongPay follows a **Clean Architecture** approach, separating business logic from infrastructure through dedicated layers for handlers, services, repositories, models, configuration, routing, and persistence.
 
-# 🌍 Why KongPay?
+This modular architecture improves:
 
-Modern payment ecosystems require scalable and secure backend infrastructure. Digital payment systems typically involve many distinct concerns: account balances, merchants, transactions, authentication, settlement, auditability, integrations, infrastructure, and operational controls.
+- Scalability
+- Maintainability
+- Testability
+- Security
+- Long-term extensibility
 
-KongPay aims to provide reusable financial service components that developers and organizations can extend without building everything from scratch. The platform explores how those concerns can be separated into reusable services and clean application layers instead of being concentrated in one tightly coupled codebase.
+The current release provides a fully functional backend foundation powered by **Go**, **Gin**, **PostgreSQL**, **Redis**, and **Docker**, while additional financial capabilities continue to be developed incrementally.
 
-KongPay focuses on:
-* Security
-* Scalability
-* Performance
-* Simplicity
-* Developer Experience
-* Maintainability
-* Extensible financial-service architecture
-* Open Source Collaboration
+> **🚧 Development Status**
+>
+> KongPay is currently under active development.
+> Features marked as **Roadmap**, **Planned**, or **In Progress** represent future milestones and should not be interpreted as production-ready financial services.
 
----
+# 🏗 System Architecture
 
-# 🎯 Project Goals
-
-* Build reusable payment infrastructure & components
-* Develop a production-ready Wallet Service
-* Maintain a clean Go backend architecture
-* Add secure identity and authentication capabilities
-* Develop merchant-management APIs & provide Merchant APIs
-* Build Transaction Ledger & introduce a transaction ledger
-* Develop Settlement Engine & develop payment and settlement workflows
-* Add documented integration interfaces
-* Support JWT Authentication
-* Support QRIS & Virtual Account integration
-* Improve testing, migrations, deployment, and CI/CD over successive releases
-* Encourage Open Source Collaboration
-
----
-
-# 📊 Project Status
-
-| Capability | Status |
-| :--- | :--- |
-| Go Backend | ✅ Implemented |
-| Gin REST API | ✅ Implemented |
-| PostgreSQL Connection | ✅ Implemented |
-| Wallet Persistence | ✅ Implemented |
-| Wallet CRUD | ✅ Implemented & Tested |
-| Redis Container / Infrastructure | ✅ Available |
-| Docker Development Infrastructure | ✅ Available |
-| GitHub Actions | ✅ Available |
-| JWT Authentication | 🚧 Planned |
-| Swagger / OpenAPI | 🚧 Planned |
-| SQL Migration Workflow | 🚧 Planned |
-| Automated Unit Tests | 🚧 Planned |
-| Merchant Service | ⏳ Roadmap |
-| Payment Engine | ⏳ Roadmap |
-| Transaction Ledger | ⏳ Roadmap |
-| Settlement Service | ⏳ Roadmap |
-| QRIS Integration | ⏳ Roadmap |
-| Virtual Account Integration | ⏳ Roadmap |
-
----
-
-# 🏗 Architecture
-
-The Wallet request path implemented today is:
-
-```text
-HTTP Request
-     │
-     ▼
-Gin Router
-     │
-     ▼
-Wallet Handler
-     │
-     ▼
-Wallet Service
-     │
-     ▼
-Wallet Repository
-     │
-     ▼
-PostgreSQL
-```
+KongPay is built using a layered architecture that separates business logic from infrastructure, making the platform easier to maintain, scale, and extend.
 
 ```mermaid
 flowchart TD
-    A[Client] --> B[Gin REST API]
-    B --> C[Router]
-    C --> D[Wallet Handler]
-    D --> E[Wallet Service]
-    E --> F[Wallet Repository]
-    F --> G[(PostgreSQL)]
-    H[(Redis)] -. Supporting Infrastructure .-> E
+
+    Client[Client Applications]
+
+    API[KongPay REST API]
+
+    Router[HTTP Router]
+
+    Handler[Request Handlers]
+
+    Service[Business Services]
+
+    Repository[Repositories]
+
+    DB[(PostgreSQL)]
+
+    Cache[(Redis)]
+
+    Client --> API
+    API --> Router
+    Router --> Handler
+    Handler --> Service
+    Service --> Repository
+    Repository --> DB
+
+    Cache -. Cache Layer .-> Service
 ```
 
+### Architecture Principles
+
+- 🧩 Clean Architecture
+- 🔄 Separation of Concerns
+- 📦 Repository Pattern
+- 💉 Dependency Injection
+- ⚡ API-First Design
+- 🔒 Secure by Design
+- 📈 Horizontally Scalable
+
+---
+
+# 🔄 Request Processing Flow
+
+The following sequence illustrates how a request is processed throughout the KongPay backend.
 
 ```mermaid
 sequenceDiagram
+
     participant Client
-    participant Router
+    participant API
     participant Handler
     participant Service
     participant Repository
     participant PostgreSQL
 
-    Client->>Router: HTTP request
-    Router->>Handler: Dispatch endpoint
-    Handler->>Service: Validate/execute operation
-    Service->>Repository: Persistence operation
-    Repository->>PostgreSQL: SQL query
-    PostgreSQL-->>Repository: Result
-    Repository-->>Service: Domain data
-    Service-->>Handler: Result
-    Handler-->>Client: JSON response
+    Client->>API: HTTP Request
+    API->>Handler: Route Request
+    Handler->>Service: Validate Business Logic
+    Service->>Repository: Execute Database Operation
+    Repository->>PostgreSQL: SQL Query
+
+    PostgreSQL-->>Repository: Query Result
+    Repository-->>Service: Domain Model
+    Service-->>Handler: Response Object
+    Handler-->>Client: JSON Response
 ```
 
 ---
 
 # ✨ Current Features
 
-- ✅ RESTful Wallet API
-- ✅ Create Wallet
-- ✅ List Wallets
-- ✅ Get Wallet by ID
-- ✅ Update Wallet
-- ✅ Delete Wallet
-- ✅ PostgreSQL Persistence
-- ✅ UUID Wallet Identifiers
-- ✅ Wallet Balance, Currency & Status
+## Core Infrastructure
+
+- ✅ RESTful API
+- ✅ Clean Architecture
 - ✅ Repository Pattern
 - ✅ Service Layer
-- ✅ Handler Layer
 - ✅ Dependency Injection
-- ✅ Environment-Based Configuration
+- ✅ Environment Configuration
 - ✅ Health Check Endpoint
-- ✅ Docker-based PostgreSQL & Redis Development Environment
-- ✅ GitHub Actions CI
+
+## Wallet Service
+
+- ✅ Create Wallet
+- ✅ Get Wallet
+- ✅ List Wallets
+- ✅ Update Wallet
+- ✅ Delete Wallet
+- ✅ UUID Wallet Identifier
+- ✅ Wallet Balance Management
+- ✅ Currency Management
+- ✅ Wallet Status Management
+
+## Infrastructure
+
+- ✅ PostgreSQL Persistence
+- ✅ Redis Integration
+- ✅ Docker Development Environment
+- ✅ GitHub Actions CI/CD
+
+## Financial Modules
+
+- ✅ Wallet Infrastructure
+- 🚧 Payment Engine
+- 🚧 Transaction Ledger
+- 🚧 Settlement Engine
+- 🚧 Settlement Event Audit
+- 🚧 Settlement Reconciliation
+- ⏳ Merchant Service
+- ⏳ Invoice Engine
+- ⏳ Webhook Service
 
 ---
 
 # ⚙ Technology Stack
 
-| Layer | Technology |
-|--------|------------|
+| Category | Technology |
+|-----------|------------|
 | **Language** | Go 1.26 |
-| **HTTP Framework** | Gin |
+| **Framework** | Gin |
 | **Database** | PostgreSQL 17 |
-| **PostgreSQL Driver** | pgx v5 |
+| **Database Driver** | pgx v5 |
 | **Cache** | Redis 7 |
 | **Identifiers** | Google UUID |
-| **Containers** | Docker |
+| **Containerization** | Docker |
 | **CI/CD** | GitHub Actions |
-| **API Style** | REST |
+| **API** | REST |
 | **Version Control** | Git |
+| **Architecture** | Clean Architecture |
+| **Documentation** | Markdown + Mermaid |
 
----
+# 📂 Repository Structure
 
-## 📂 Repository Structure
+KongPay follows the **Standard Go Project Layout** combined with **Clean Architecture** principles. Each package has a single responsibility, making the codebase modular, maintainable, and easy to scale.
 
 ```text
 kongpay/
 │
 ├── cmd/
 │   └── kongpay/
-│       └── main.go
+│       └── main.go                # Application entry point
 │
 ├── internal/
-│   ├── config/
-│   ├── database/
-│   ├── handlers/
-│   ├── middleware/
-│   ├── models/
-│   ├── repositories/
-│   ├── router/
-│   ├── services/
-│   └── utils/
+│   ├── config/                    # Configuration management
+│   ├── database/                  # PostgreSQL connection
+│   ├── handlers/                  # HTTP handlers
+│   ├── middleware/                # Authentication & middleware
+│   ├── models/                    # Domain entities
+│   ├── repositories/              # Data access layer
+│   ├── router/                    # API routing
+│   ├── services/                  # Business logic
+│   ├── settlement/                # Settlement engine
+│   ├── reconciliation/            # Reconciliation engine
+│   ├── audit/                     # Audit events
+│   └── utils/                     # Shared utilities
 │
-├── migrations/
-├── docker/
-├── docs/
-├── tests/
+├── migrations/                    # Database migrations
+├── docker/                        # Docker configuration
+├── docs/                          # Documentation
+├── tests/                         # Unit & integration tests
+│
 ├── .github/
-│   └── workflows/
+│   └── workflows/                 # GitHub Actions
 │
 ├── docker-compose.yml
 ├── go.mod
@@ -258,52 +261,126 @@ kongpay/
 └── README.md
 ```
 
-### 📁 Directory Overview
+---
 
-| Directory | Purpose |
-|-----------|---------|
-| `cmd/kongpay` | Application entry point (`main.go`) |
-| `internal/config` | Environment and application configuration |
-| `internal/database` | PostgreSQL connection management |
-| `internal/handlers` | HTTP request handlers |
-| `internal/middleware` | HTTP middleware |
-| `internal/models` | Domain models and entities |
-| `internal/repositories` | Database access layer |
-| `internal/router` | API route definitions |
-| `internal/services` | Business logic layer |
-| `internal/utils` | Shared helper functions |
-| `migrations` | SQL database migrations |
-| `docker` | Docker configuration files |
-| `docs` | Project documentation |
-| `tests` | Unit and integration tests |
-| `.github/workflows` | GitHub Actions CI/CD workflows |
+# 🏛 Project Architecture
+
+```mermaid
+flowchart LR
+
+    CMD["cmd/"]
+    ROUTER["router"]
+    HANDLER["handlers"]
+    SERVICE["services"]
+    REPO["repositories"]
+    MODEL["models"]
+
+    DB[(PostgreSQL)]
+    CACHE[(Redis)]
+
+    CMD --> ROUTER
+    ROUTER --> HANDLER
+    HANDLER --> SERVICE
+    SERVICE --> REPO
+    REPO --> DB
+
+    SERVICE --> MODEL
+    SERVICE -. Cache .-> CACHE
+```
 
 ---
+
+# 📁 Directory Overview
+
+| Directory | Description |
+|------------|-------------|
+| `cmd/kongpay` | Application bootstrap and entry point |
+| `internal/config` | Environment variables and application configuration |
+| `internal/database` | PostgreSQL initialization and connection management |
+| `internal/router` | API routing and endpoint registration |
+| `internal/handlers` | HTTP request and response handlers |
+| `internal/services` | Core business logic implementation |
+| `internal/repositories` | Database persistence layer |
+| `internal/models` | Domain entities and data models |
+| `internal/middleware` | Authentication, authorization, logging, and request middleware |
+| `internal/settlement` | Settlement processing engine |
+| `internal/reconciliation` | Settlement reconciliation engine |
+| `internal/audit` | Financial audit trail and event logging |
+| `internal/utils` | Shared helper utilities |
+| `migrations` | SQL database migration scripts |
+| `docker` | Docker and container configuration |
+| `docs` | Technical documentation and API references |
+| `tests` | Unit, integration, and end-to-end tests |
+| `.github/workflows` | Continuous Integration (GitHub Actions) |
 
 ---
 
 # 📋 Layer Responsibilities
 
 | Layer | Responsibility |
-|--------|----------------|
-| `cmd/kongpay` | Application entry point (`main.go`) |
-| `internal/config` | Environment and application configuration |
-| `internal/database` | PostgreSQL connection lifecycle |
-| `internal/handlers` | HTTP request and response handling |
-| `internal/models` | Domain models and entities |
-| `internal/repositories` | Database persistence operations |
-| `internal/services` | Business and application logic |
-| `internal/router` | API routing and dependency injection |
-| `internal/middleware` | Cross-cutting HTTP middleware |
-| `migrations` | SQL database migration scripts |
-| `docs` | Project documentation |
-| `tests` | Unit and integration tests |
+|---------|----------------|
+| **API Layer** | Receives incoming HTTP requests |
+| **Router Layer** | Maps endpoints to handlers |
+| **Handler Layer** | Validates requests and formats responses |
+| **Service Layer** | Executes business rules and orchestrates workflows |
+| **Repository Layer** | Performs database operations |
+| **Persistence Layer** | Stores application data in PostgreSQL |
+| **Cache Layer** | Accelerates frequently accessed data using Redis |
 
 ---
 
+# 🔄 Dependency Flow
+
+```mermaid
+graph TD
+
+A[HTTP Request]
+--> B[Router]
+--> C[Handler]
+--> D[Service]
+--> E[Repository]
+--> F[(PostgreSQL)]
+
+D -. Cache .-> G[(Redis)]
+```
+
+---
+
+# 🗄 Database Modules
+
+The current KongPay data model consists of the following core modules:
+
+| Module | Purpose |
+|---------|----------|
+| `users` | User identity and account information |
+| `wallets` | Digital wallet management |
+| `transactions` | Payment transaction records |
+| `ledger_entries` | Double-entry accounting ledger |
+| `settlements` | Settlement batches |
+| `settlement_events` | Settlement lifecycle events |
+| `settlement_reconciliations` | Reconciliation results and differences |
+
+---
+
+# 🧩 Design Principles
+
+KongPay is designed around several engineering principles:
+
+- 🧩 Clean Architecture
+- 🔄 Separation of Concerns
+- 📦 Repository Pattern
+- 💉 Dependency Injection
+- 🔒 Secure by Design
+- ⚡ API-First Development
+- 📈 Horizontally Scalable
+- 🧪 Testable Components
+- ☁️ Cloud-Native Ready
+
 # 🗄 Database Schema
 
-The current Wallet Service uses the following database schema.
+KongPay uses **PostgreSQL** as its primary relational database to provide reliable transactional consistency, data integrity, and long-term scalability.
+
+The Wallet Service currently stores digital wallet information using the following schema.
 
 ```sql
 CREATE TABLE wallets (
@@ -323,23 +400,50 @@ CREATE INDEX idx_wallets_status
 ON wallets(status);
 ```
 
-## Wallet Table
+---
+
+# 🗂 Entity Relationship
+
+```mermaid
+erDiagram
+
+    USERS ||--o{ WALLETS : owns
+
+    USERS {
+        UUID id
+        STRING name
+    }
+
+    WALLETS {
+        UUID id
+        UUID user_id
+        NUMERIC balance
+        STRING currency
+        STRING status
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+```
+
+---
+
+# 📊 Wallet Table
 
 | Column | Type | Description |
-|--------|------|-------------|
+|---------|------|-------------|
 | `id` | UUID | Primary key |
 | `user_id` | UUID | Wallet owner |
 | `balance` | NUMERIC(20,2) | Current wallet balance |
-| `currency` | VARCHAR(10) | Wallet currency (IDR, USD, etc.) |
-| `status` | VARCHAR(20) | Wallet status (ACTIVE, BLOCKED, CLOSED) |
-| `created_at` | TIMESTAMP | Record creation time |
-| `updated_at` | TIMESTAMP | Last update time |
+| `currency` | VARCHAR(10) | Wallet currency (IDR, USD, USD, etc.) |
+| `status` | VARCHAR(20) | ACTIVE, BLOCKED, CLOSED |
+| `created_at` | TIMESTAMP | Record creation timestamp |
+| `updated_at` | TIMESTAMP | Last modification timestamp |
 
 ---
 
----
+# ⚡ Database Indexes
 
-# 🔍 Database Indexes
+To improve lookup performance, the Wallet Service currently defines the following indexes.
 
 ```sql
 CREATE INDEX idx_wallets_user_id
@@ -349,55 +453,96 @@ CREATE INDEX idx_wallets_status
 ON wallets(status);
 ```
 
+| Index | Purpose |
+|---------|----------|
+| `idx_wallets_user_id` | Fast lookup by wallet owner |
+| `idx_wallets_status` | Efficient filtering by wallet status |
+
 ---
 
-# 📊 Wallet Fields
+# 📈 Wallet Lifecycle
 
-| Column | Type | Purpose |
-|--------|------|---------|
-| `id` | UUID | Unique wallet identifier |
-| `user_id` | UUID | Owner / User identifier |
-| `balance` | NUMERIC(20,2) | Wallet balance |
-| `currency` | VARCHAR(10) | Wallet currency (IDR, USD, etc.) |
-| `status` | VARCHAR(20) | Wallet status |
-| `created_at` | TIMESTAMP | Creation timestamp |
-| `updated_at` | TIMESTAMP | Last update timestamp |
+```mermaid
+stateDiagram-v2
+
+    [*] --> ACTIVE
+
+    ACTIVE --> BLOCKED
+    BLOCKED --> ACTIVE
+
+    ACTIVE --> CLOSED
+    BLOCKED --> CLOSED
+
+    CLOSED --> [*]
+```
 
 ---
 
 # 📡 REST API
 
-**Base URL**
+## Base URL
 
 ```text
 /api/v1
 ```
 
-## 🎯 Endpoint Matrix
+---
+
+# 🎯 Endpoint Matrix
 
 | Method | Endpoint | Description | Status |
-|--------|----------|-------------|:------:|
+|---------|----------|-------------|:------:|
 | GET | `/health` | Application health check | ✅ |
-| POST | `/api/v1/wallets` | Create wallet | ✅ |
-| GET | `/api/v1/wallets` | List wallets | ✅ |
-| GET | `/api/v1/wallets/{id}` | Get wallet by ID | ✅ |
-| PUT | `/api/v1/wallets/{id}` | Update wallet | ✅ |
-| DELETE | `/api/v1/wallets/{id}` | Delete wallet | ✅ |
+| POST | `/wallets` | Create Wallet | ✅ |
+| GET | `/wallets` | List Wallets | ✅ |
+| GET | `/wallets/{id}` | Get Wallet | ✅ |
+| PUT | `/wallets/{id}` | Update Wallet | ✅ |
+| DELETE | `/wallets/{id}` | Delete Wallet | ✅ |
 
 ---
 
-# 🧪 API Examples
+# 🔄 Wallet CRUD Flow
+
+```mermaid
+flowchart LR
+
+A[Client]
+
+B[POST /wallets]
+
+C[Wallet Service]
+
+D[(PostgreSQL)]
+
+E[Wallet Created]
+
+A --> B
+B --> C
+C --> D
+D --> E
+```
+
+---
+
+# 🧪 API Example
 
 ## 🚀 Create Wallet
 
-```bash
-curl -X POST http://localhost:8080/api/v1/wallets \
--H "Content-Type: application/json" \
--d '{
-  "user_id":"550e8400-e29b-41d4-a716-446655440000",
-  "currency":"IDR"
-}'
+### Request
+
+```http
+POST /api/v1/wallets
+Content-Type: application/json
 ```
+
+```json
+{
+  "user_id": "550e8400-e29b-41d4-a716-446655440000",
+  "currency": "IDR"
+}
+```
+
+---
 
 ### Response
 
@@ -415,7 +560,69 @@ curl -X POST http://localhost:8080/api/v1/wallets \
 
 ---
 
-## 📋 List Wallets
+# 📥 Example Response Codes
+
+| HTTP Code | Meaning |
+|-----------|---------|
+| **200** | Success |
+| **201** | Resource Created |
+| **400** | Invalid Request |
+| **404** | Wallet Not Found |
+| **409** | Duplicate Resource |
+| **500** | Internal Server Error |
+
+---
+
+# 🔮 Future Database Modules
+
+As KongPay evolves into a complete digital payment platform, the database schema will expand with additional financial modules.
+
+```mermaid
+graph TD
+
+Wallets --> Transactions
+Transactions --> Ledger
+Ledger --> Settlement
+Settlement --> SettlementEvents
+Settlement --> Reconciliation
+Transactions --> Merchant
+Merchant --> Invoice
+Invoice --> PaymentGateway
+```
+
+Future tables:
+
+- users
+- wallets
+- merchants
+- merchant_accounts
+- invoices
+- transactions
+- ledger_entries
+- settlements
+- settlement_events
+- settlement_reconciliations
+- webhooks
+- notifications
+- audit_logs
+
+# 📋 Wallet API Operations
+
+The Wallet Service exposes a RESTful API for creating, retrieving, updating, and managing digital wallets.
+
+---
+
+## 📑 List Wallets
+
+Retrieve all registered wallets.
+
+### Request
+
+```http
+GET /api/v1/wallets
+```
+
+or
 
 ```bash
 curl http://localhost:8080/api/v1/wallets
@@ -441,6 +648,14 @@ curl http://localhost:8080/api/v1/wallets
 
 ## 🔍 Get Wallet
 
+Retrieve a wallet by its unique identifier.
+
+### Request
+
+```http
+GET /api/v1/wallets/{id}
+```
+
 ```bash
 curl http://localhost:8080/api/v1/wallets/11c58304-cffc-4073-90a9-a2e6b7aac7e2
 ```
@@ -448,6 +663,22 @@ curl http://localhost:8080/api/v1/wallets/11c58304-cffc-4073-90a9-a2e6b7aac7e2
 ---
 
 ## ✏️ Update Wallet
+
+Update wallet information.
+
+### Request
+
+```http
+PUT /api/v1/wallets/{id}
+```
+
+```json
+{
+  "currency": "USD",
+  "balance": 100000,
+  "status": "ACTIVE"
+}
+```
 
 ```bash
 curl -X PUT http://localhost:8080/api/v1/wallets/11c58304-cffc-4073-90a9-a2e6b7aac7e2 \
@@ -462,6 +693,14 @@ curl -X PUT http://localhost:8080/api/v1/wallets/11c58304-cffc-4073-90a9-a2e6b7a
 ---
 
 ## 🗑 Delete Wallet
+
+Delete an existing wallet.
+
+### Request
+
+```http
+DELETE /api/v1/wallets/{id}
+```
 
 ```bash
 curl -X DELETE http://localhost:8080/api/v1/wallets/11c58304-cffc-4073-90a9-a2e6b7aac7e2
@@ -479,13 +718,32 @@ curl -X DELETE http://localhost:8080/api/v1/wallets/11c58304-cffc-4073-90a9-a2e6
 
 # 🚀 Getting Started
 
+Getting KongPay up and running takes only a few minutes.
+
+```mermaid
+flowchart LR
+
+A[Clone Repository]
+--> B[Download Dependencies]
+--> C[Configure Environment]
+--> D[Start Docker Services]
+--> E[Run KongPay]
+--> F[Test REST API]
+```
+
+---
+
 ## 🛠 Requirements
 
-- Go 1.26+
-- Git
-- Docker
-- Docker Compose
-- curl
+| Software | Version |
+|----------|----------|
+| Go | 1.26+ |
+| PostgreSQL | 17+ |
+| Redis | 7+ |
+| Docker | Latest |
+| Docker Compose | Latest |
+| Git | Latest |
+| curl | Latest |
 
 ---
 
@@ -524,7 +782,7 @@ DB_PASSWORD=postgres
 DB_SSLMODE=disable
 ```
 
-> **Never commit production passwords or secrets to Git.**
+> ⚠️ Never commit production secrets or credentials into Git repositories.
 
 ---
 
@@ -534,7 +792,7 @@ DB_SSLMODE=disable
 docker compose up -d
 ```
 
-Verify containers:
+Verify running containers.
 
 ```bash
 docker ps
@@ -548,7 +806,7 @@ docker ps
 go run ./cmd/kongpay
 ```
 
-Server:
+Application URL
 
 ```text
 http://localhost:8080
@@ -556,7 +814,7 @@ http://localhost:8080
 
 ---
 
-## ✅ Health Check
+## ❤️ Health Check
 
 ```bash
 curl http://localhost:8080/health
@@ -567,15 +825,22 @@ curl http://localhost:8080/health
 # 🐳 Docker Development Infrastructure
 
 ```mermaid
-flowchart LR
+flowchart TD
 
-A[KongPay API]
---> B[(PostgreSQL 17)]
+Client[Developer]
 
-A -. Cache .-> C[(Redis 7)]
+API[KongPay API]
+
+DB[(PostgreSQL 17)]
+
+REDIS[(Redis 7)]
+
+Client --> API
+API --> DB
+API -. Cache Layer .-> REDIS
 ```
 
-Useful commands:
+Useful commands
 
 ```bash
 docker compose up -d
@@ -588,25 +853,38 @@ docker compose down
 
 # 🛠 Development Workflow
 
-Format code:
+```mermaid
+flowchart LR
+
+Code
+--> Format
+--> Test
+--> Build
+--> Run
+--> Commit
+--> Push
+--> CI
+```
+
+Format
 
 ```bash
 go fmt ./...
 ```
 
-Run tests:
+Run Tests
 
 ```bash
 go test ./...
 ```
 
-Build:
+Build
 
 ```bash
 go build ./...
 ```
 
-Run application:
+Run
 
 ```bash
 go run ./cmd/kongpay
@@ -616,28 +894,15 @@ go run ./cmd/kongpay
 
 # 🔁 Git Workflow
 
-Repository status:
-
 ```bash
 git status
-```
 
-Sync latest changes:
-
-```bash
 git pull --rebase origin main
-```
 
-Commit:
-
-```bash
 git add .
+
 git commit -m "feat(wallet): complete wallet CRUD"
-```
 
-Push:
-
-```bash
 git push origin main
 ```
 
@@ -645,46 +910,59 @@ git push origin main
 
 # ⚙ GitHub Actions
 
-Current CI pipeline:
+## Current Pipeline
 
+- ✅ Dependency Download
 - ✅ Go Build
 - ✅ Go Test
-- ✅ Dependency Download
 
-Planned improvements:
+### Planned Improvements
 
-- gofmt validation
-- govet
-- golangci-lint
-- coverage reports
-- Docker image publishing
+- 🔄 gofmt Validation
+- 🔄 go vet
+- 🔄 golangci-lint
+- 🔄 Test Coverage Reports
+- 🔄 Docker Image Publishing
+- 🔄 Automated Release Workflow
 
 ---
 
 # 🔐 Security Roadmap
 
-Planned security features:
+```mermaid
+mindmap
+  root((Security))
 
-- JWT Authentication
-- Refresh Token
-- RBAC Authorization
-- Audit Logging
-- Request Validation
-- Rate Limiting
-- Secret Management
-- Dependency Scanning
+    Authentication
+      JWT
+      Refresh Token
+
+    Authorization
+      RBAC
+
+    API
+      Rate Limiting
+      Request Validation
+
+    Infrastructure
+      Secret Management
+      Dependency Scanning
+      Audit Logging
+```
 
 ---
 
 # 🗃 Database Migration Roadmap
 
-Future SQL migrations:
-
 ```text
 migrations/
+
 ├── 001_create_wallets.sql
 ├── 002_create_merchants.sql
 ├── 003_create_transactions.sql
+├── 004_create_ledger.sql
+├── 005_create_settlements.sql
+├── 006_create_reconciliation.sql
 └── ...
 ```
 
@@ -692,163 +970,178 @@ migrations/
 
 # 🧪 Testing Roadmap
 
-Planned automated testing:
-
-- Unit Tests
-- Repository Tests
-- Service Tests
-- Handler Tests
-- Integration Tests
-- Authentication Tests
-
----
-
-# 🧭 Roadmap
-
-## ✅ v0.1.0 — Initial Foundation
-
-- Go Project
-- PostgreSQL
-- Redis
-- Docker
-- GitHub Actions
+- ✅ Unit Tests
+- 🚧 Repository Tests
+- 🚧 Service Tests
+- 🚧 Handler Tests
+- 🚧 Integration Tests
+- 🚧 End-to-End Tests
+- 🚧 Authentication Tests
+- 🚧 Performance Tests
 
 ---
 
-## ✅ v0.2.0 — Wallet CRUD
+# 🧭 Product Roadmap
 
-- Create Wallet
-- List Wallets
-- Get Wallet
-- Update Wallet
-- Delete Wallet
+```mermaid
+timeline
 
----
+title KongPay Development Roadmap
 
-## 🚧 Next Milestones
+v0.1.0
+    : Project Foundation
+    : PostgreSQL
+    : Redis
+    : Docker
+    : GitHub Actions
 
-- JWT Authentication
-- Swagger / OpenAPI
-- SQL Migration
-- Unit Testing
-- Merchant Service
-- Payment Engine
-- Ledger
-- Settlement
+v0.2.0
+    : Wallet CRUD
+    : REST API
 
----
+v1.0.0 Alpha
+    : Payment Engine
+    : Ledger
+    : Settlement
+    : Reconciliation
 
-# 🌐 Future KongPay Ecosystem
-
-```text
-KongPay
-│
-├── Wallet Service             ✅
-├── Authentication             🚧
-├── Merchant Service           ⏳
-├── Payment Engine             ⏳
-├── Transaction Ledger         ⏳
-├── Settlement Service         ⏳
-├── Webhook Service            ⏳
-├── Notification Service       ⏳
-├── QRIS Integration           ⏳
-├── Virtual Account            ⏳
-├── API Gateway                ⏳
-└── Developer SDK              ⏳
+Future
+    : Merchant Platform
+    : QRIS
+    : Virtual Account
+    : Webhook
+    : SDK
+    : API Gateway
 ```
 
 ---
 
----
+# 🌐 KongPay Ecosystem
 
-<h1 align="center">🤝 Contributing</h1>
+```mermaid
+graph TD
 
-<p align="center">
-We welcome contributions from developers, researchers, and the open-source community.
-</p>
+KP[KongPay]
 
-<p align="center">
-
-• Pull Requests • Issues • Feature Requests • Documentation Improvements
-
-</p>
-
-<p align="center">
-Please follow the project's coding standards and submit well-documented pull requests.
-</p>
-
----
-
-<h1 align="center">🛡 Responsible Security Reporting</h1>
-
-<p align="center">
-If you discover a security vulnerability, please report it privately before creating a public issue.
-</p>
-
-<p align="center">
-This helps maintainers investigate and resolve the issue responsibly before disclosure.
-</p>
+KP --> Wallet
+KP --> Merchant
+KP --> Payment
+KP --> Ledger
+KP --> Settlement
+KP --> Reconciliation
+KP --> Notification
+KP --> Webhook
+KP --> QRIS
+KP --> VirtualAccount
+KP --> SDK
+KP --> APIGateway
+```
 
 ---
 
-<h1 align="center">📜 License</h1>
+# 🤝 Contributing
 
-<p align="center">
-This project is distributed under the <b>MIT License</b>.
-</p>
+We welcome developers, researchers, and open-source enthusiasts to contribute to KongPay.
 
-<p align="center">
-See the <code>LICENSE</code> file for complete licensing information.
-</p>
+You can contribute by:
+
+- 🚀 Opening Pull Requests
+- 🐞 Reporting Issues
+- 💡 Suggesting Features
+- 📖 Improving Documentation
+- 🧪 Writing Tests
+- 🔒 Enhancing Security
+
+Before submitting a Pull Request:
+
+```bash
+go fmt ./...
+go test ./...
+go build ./...
+```
 
 ---
 
-<h1 align="center">❤️ Support KongPay</h1>
+# 🛡 Responsible Security Reporting
 
-<h3 align="center">
-☕ Support the Project
-</h3>
+If you discover a security vulnerability, please report it **privately** before creating a public issue.
 
-<p align="center">
-If <b>KongPay</b> has helped your learning, research, or software development journey,
-consider supporting the continued development of this open-source project.
-</p>
+Responsible disclosure allows maintainers to investigate and resolve security issues before public publication.
 
-<p align="center">
+---
+
+# 📜 License
+
+This project is licensed under the **MIT License**.
+
+See the `LICENSE` file for more information.
+
+---
+
+# ❤️ Support KongPay
+
+<div align="center">
+
+### ☕ Support Open Source Development
+
+If KongPay has helped your learning or software development journey, consider supporting future development.
 
 <a href="https://www.paypal.com/paypalme/bungtempong99">
 <img src="https://img.shields.io/badge/☕-Support_Development-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=000000">
 </a>
 
-</p>
+</div>
 
-<br>
+---
 
-<h3 align="center">
-Every contribution helps improve
-</h3>
+# 🌟 Project Vision
 
-<p align="center">
+```mermaid
+mindmap
+  root((KongPay))
+    Core Services
+      Wallet Infrastructure
+      Payment Processing
+      Transaction Ledger
+      Settlement Engine
+      Settlement Reconciliation
 
-📚 Documentation &nbsp;&nbsp;•&nbsp;&nbsp;
-🔒 Security &nbsp;&nbsp;•&nbsp;&nbsp;
-🐳 Infrastructure &nbsp;&nbsp;•&nbsp;&nbsp;
-🚀 Developer Experience &nbsp;&nbsp;•&nbsp;&nbsp;
-🌍 Open Source Sustainability
+    Business Services
+      Merchant Platform
+      Invoice Engine
+      Webhook Service
+      Notification Service
 
-</p>
+    Payment Channels
+      QRIS
+      Virtual Account
+      Payment Gateway
 
-<br>
+    Developer Platform
+      REST API
+      Developer SDK
+      API Gateway
+      OpenAPI Documentation
 
-<h2 align="center">
-Built with ❤️ using Go by <b>KONGALI1720</b>
-</h2>
+    Enterprise
+      Enterprise Banking
+      Security
+      Audit Trail
+      Monitoring
 
-<p align="center">
-<b>Autonomous Digital Financial Infrastructure</b>
-</p>
+    Community
+      Open Source
+      Documentation
+      Contributors
+```
 
-<p align="center">
+---
+
+<div align="center">
+
+# ❤️ Built with Go by **KONGALI1720**
+
+### Autonomous Digital Financial Infrastructure
 
 <img src="https://img.shields.io/badge/Go-1.26-00ADD8?style=for-the-badge&logo=go&logoColor=white">
 <img src="https://img.shields.io/badge/Gin-Framework-008ECF?style=for-the-badge">
@@ -856,10 +1149,6 @@ Built with ❤️ using Go by <b>KONGALI1720</b>
 <img src="https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white">
 <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 
-</p>
+### 🇮🇩 Made with ❤️ in Indonesia
 
-<p align="center">
-Made with ❤️ in Indonesia 🇮🇩
-</p>
-
----
+</div>
