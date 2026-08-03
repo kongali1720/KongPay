@@ -87,3 +87,36 @@ func (h *SettlementHandler) Get(c *gin.Context) {
 		"settlement": result,
 	})
 }
+
+func (h *SettlementHandler) Process(c *gin.Context) {
+
+	id, err := uuid.Parse(
+		c.Param("id"),
+	)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	result, err := h.service.Process(
+		c.Request.Context(),
+		id,
+	)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success":    true,
+		"settlement": result,
+	})
+}

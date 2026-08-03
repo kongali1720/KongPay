@@ -50,8 +50,11 @@ func Setup(db *pgx.Conn) *gin.Engine {
 	// Settlement
 	settlementRepo := repositories.NewSettlementRepository(db)
 
+	settlementEventRepo := repositories.NewSettlementEventRepository(db)
+
 	settlementService := settlement.NewService(
 		settlementRepo,
+		settlementEventRepo,
 	)
 
 	settlementHandler := handlers.NewSettlementHandler(
@@ -88,6 +91,7 @@ func Setup(db *pgx.Conn) *gin.Engine {
 		// Settlement
 		api.POST("/settlements", settlementHandler.Create)
 		api.GET("/settlements/:id", settlementHandler.Get)
+		api.POST("/settlements/:id/process", settlementHandler.Process)
 	}
 
 	return r

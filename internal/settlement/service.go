@@ -10,15 +10,18 @@ import (
 )
 
 type Service struct {
-	Repo *repositories.SettlementRepository
+	Repo      *repositories.SettlementRepository
+	EventRepo *repositories.SettlementEventRepository
 }
 
 func NewService(
 	repo *repositories.SettlementRepository,
+	eventRepo *repositories.SettlementEventRepository,
 ) *Service {
 
 	return &Service{
-		Repo: repo,
+		Repo:      repo,
+		EventRepo: eventRepo,
 	}
 }
 
@@ -80,14 +83,55 @@ func (s *Service) Process(
 		return nil, err
 	}
 
+	oldStatus := settlement.Status
+
 	settlement.Status = models.SettlementProcessing
 
-	// nanti di sini masuk settlement logic
-	// reconciliation
+	err = s.EventRepo.Create(
+		ctx,
+		&models.SettlementEvent{
+			ID: uuid.New(),
+
+			SettlementID: settlement.ID,
+
+			EventType: models.SettlementEventProcessing,
+
+			OldStatus: oldStatus,
+
+			NewStatus: settlement.Status,
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Settlement reconciliation logic
 	// transaction matching
-	// external payout
+	// external payout integration
+
+	oldStatus = settlement.Status
 
 	settlement.Status = models.SettlementCompleted
+
+	err = s.EventRepo.Create(
+		ctx,
+		&models.SettlementEvent{
+			ID: uuid.New(),
+
+			SettlementID: settlement.ID,
+
+			EventType: models.SettlementEventCompleted,
+
+			OldStatus: oldStatus,
+
+			NewStatus: settlement.Status,
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
 
 	return settlement, nil
 }
