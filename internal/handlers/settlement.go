@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 
 	"github.com/kongali1720/KongPay/internal/settlement"
 )
@@ -49,6 +50,39 @@ func (h *SettlementHandler) Create(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
+		"success":    true,
+		"settlement": result,
+	})
+}
+
+func (h *SettlementHandler) Get(c *gin.Context) {
+
+	id, err := uuid.Parse(
+		c.Param("id"),
+	)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	result, err := h.service.FindByID(
+		c.Request.Context(),
+		id,
+	)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
 		"success":    true,
 		"settlement": result,
 	})

@@ -87,6 +87,7 @@ func Setup(db *pgx.Conn) *gin.Engine {
 
 		// Settlement
 		api.POST("/settlements", settlementHandler.Create)
+		api.GET("/settlements/:id", settlementHandler.Get)
 	}
 
 	return r

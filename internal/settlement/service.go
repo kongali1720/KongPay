@@ -54,3 +54,14 @@ func (s *Service) CreateBatch(
 
 	return settlement, nil
 }
+
+func (s *Service) FindByID(
+	ctx context.Context,
+	id uuid.UUID,
+) (*models.Settlement, error) {
+
+	return s.Repo.FindByID(
+		ctx,
+		id,
+	)
+}
