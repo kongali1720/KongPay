@@ -5,6 +5,7 @@ import (
 	"github.com/jackc/pgx/v5"
 
 	"github.com/kongali1720/KongPay/internal/handlers"
+	"github.com/kongali1720/KongPay/internal/payment"
 	"github.com/kongali1720/KongPay/internal/repositories"
 	"github.com/kongali1720/KongPay/internal/services"
 )
@@ -23,6 +24,19 @@ func Setup(db *pgx.Conn) *gin.Engine {
 	userService := services.NewService(userRepo, walletRepo)
 	authHandler := handlers.NewAuthHandler(userService)
 
+	// Payment Engine
+	txRepo := repositories.NewTransactionRepository(db)
+	ledgerRepo := repositories.NewLedgerRepository()
+
+	paymentService := payment.NewService(
+		db,
+		walletRepo,
+		txRepo,
+		ledgerRepo,
+	)
+
+	paymentHandler := handlers.NewPaymentHandler(paymentService)
+
 	// Public
 	r.GET("/", handlers.Home)
 	r.GET("/health", handlers.Health)
@@ -40,6 +54,9 @@ func Setup(db *pgx.Conn) *gin.Engine {
 		api.GET("/wallets/:id", walletHandler.GetWallet)
 		api.PUT("/wallets/:id", walletHandler.UpdateWallet)
 		api.DELETE("/wallets/:id", walletHandler.DeleteWallet)
+
+		// Payment
+		api.POST("/transfers", paymentHandler.Transfer)
 	}
 
 	return r

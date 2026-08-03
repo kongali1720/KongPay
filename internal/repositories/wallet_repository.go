@@ -219,3 +219,27 @@ func (r *WalletRepository) UpdateBalance(
 
 	return err
 }
+
+func (r *WalletRepository) UpdateBalanceTx(
+	ctx context.Context,
+	tx pgx.Tx,
+	id uuid.UUID,
+	balance float64,
+) error {
+
+	query := `
+	UPDATE wallets
+	SET balance = $2,
+	    updated_at = NOW()
+	WHERE id = $1
+	`
+
+	_, err := tx.Exec(
+		ctx,
+		query,
+		id,
+		balance,
+	)
+
+	return err
+}
