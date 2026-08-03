@@ -11,14 +11,20 @@ import (
 
 type Service struct {
 	Repo *repositories.SettlementReconciliationRepository
+
+	EventRepo *repositories.ReconciliationEventRepository
 }
 
 func NewService(
 	repo *repositories.SettlementReconciliationRepository,
+	eventRepo *repositories.ReconciliationEventRepository,
 ) *Service {
 
 	return &Service{
+
 		Repo: repo,
+
+		EventRepo: eventRepo,
 	}
 }
 
@@ -29,17 +35,21 @@ func (s *Service) Reconcile(
 	actual float64,
 ) (*models.SettlementReconciliation, error) {
 
-	difference := expected - actual
+	resultID := uuid.New()
+
+	// Initial reconciliation status
 
 	status := StatusMatched
 
-	if difference != 0 {
+	if expected != actual {
+
 		status = StatusMismatch
+
 	}
 
 	result := &models.SettlementReconciliation{
 
-		ID: uuid.New(),
+		ID: resultID,
 
 		SettlementID: settlementID,
 
@@ -47,14 +57,48 @@ func (s *Service) Reconcile(
 
 		ActualAmount: actual,
 
-		Difference: difference,
+		Difference: expected - actual,
 
 		Status: status,
 	}
 
+	// Save reconciliation result
+
 	err := s.Repo.Create(
 		ctx,
 		result,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Create audit event
+
+	eventType := EventMatched
+
+	if status == StatusMismatch {
+
+		eventType = EventMismatch
+
+	}
+
+	err = s.EventRepo.Create(
+		ctx,
+		&models.ReconciliationEvent{
+
+			ID: uuid.New(),
+
+			SettlementID: settlementID,
+
+			ReconciliationID: result.ID,
+
+			EventType: eventType,
+
+			OldStatus: "CREATED",
+
+			NewStatus: status,
+		},
 	)
 
 	if err != nil {

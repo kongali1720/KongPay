@@ -69,8 +69,11 @@ func Setup(db *pgx.Conn) *gin.Engine {
 	// Reconciliation Engine
 	reconciliationRepo := repositories.NewSettlementReconciliationRepository(db)
 
+	reconciliationEventRepo := repositories.NewReconciliationEventRepository(db)
+
 	reconciliationService := reconciliation.NewService(
 		reconciliationRepo,
+		reconciliationEventRepo,
 	)
 
 	reconciliationHandler := handlers.NewReconciliationHandler(
