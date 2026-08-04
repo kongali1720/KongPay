@@ -13,10 +13,7 @@ type CryptoAdapter struct {
 }
 
 func NewCryptoAdapter(network, rpcURL string) *CryptoAdapter {
-	return &CryptoAdapter{
-		network: network,
-		rpcURL:  rpcURL,
-	}
+	return &CryptoAdapter{network: network, rpcURL: rpcURL}
 }
 
 func (c *CryptoAdapter) Process(ctx context.Context, req *PaymentRequest) (*PaymentResponse, error) {
@@ -29,10 +26,7 @@ func (c *CryptoAdapter) Process(ctx context.Context, req *PaymentRequest) (*Paym
 }
 
 func (c *CryptoAdapter) Confirm(ctx context.Context, txID string) (*PaymentStatus, error) {
-	return &PaymentStatus{
-		Status:    "CONFIRMED",
-		SettledAt: time.Now().UTC().Format(time.RFC3339),
-	}, nil
+	return &PaymentStatus{Status: "CONFIRMED", SettledAt: time.Now().UTC().Format(time.RFC3339)}, nil
 }
 
 func (c *CryptoAdapter) Cancel(ctx context.Context, txID string) error {
@@ -52,14 +46,6 @@ func (c *CryptoAdapter) HandleWebhook(ctx context.Context, payload []byte) (*Web
 	}, nil
 }
 
-func (c *CryptoAdapter) Name() string {
-	return "Crypto Provider (" + c.network + ")"
-}
-
-func (c *CryptoAdapter) Type() ProviderType {
-	return Crypto
-}
-
-func (c *CryptoAdapter) IsAvailable(ctx context.Context) bool {
-	return true
-}
+func (c *CryptoAdapter) Name() string { return "Crypto Provider (" + c.network + ")" }
+func (c *CryptoAdapter) Type() ProviderType { return Crypto }
+func (c *CryptoAdapter) IsAvailable(ctx context.Context) bool { return true }

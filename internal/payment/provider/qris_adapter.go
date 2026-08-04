@@ -14,11 +14,7 @@ type QRISAdapter struct {
 }
 
 func NewQRISAdapter(merchantID, apiKey, baseURL string) *QRISAdapter {
-	return &QRISAdapter{
-		merchantID: merchantID,
-		apiKey:     apiKey,
-		baseURL:    baseURL,
-	}
+	return &QRISAdapter{merchantID: merchantID, apiKey: apiKey, baseURL: baseURL}
 }
 
 func (q *QRISAdapter) Process(ctx context.Context, req *PaymentRequest) (*PaymentResponse, error) {
@@ -31,14 +27,10 @@ func (q *QRISAdapter) Process(ctx context.Context, req *PaymentRequest) (*Paymen
 }
 
 func (q *QRISAdapter) Confirm(ctx context.Context, txID string) (*PaymentStatus, error) {
-	return &PaymentStatus{
-		Status: "SUCCESS",
-	}, nil
+	return &PaymentStatus{Status: "SUCCESS"}, nil
 }
 
-func (q *QRISAdapter) Cancel(ctx context.Context, txID string) error {
-	return nil
-}
+func (q *QRISAdapter) Cancel(ctx context.Context, txID string) error { return nil }
 
 func (q *QRISAdapter) HandleWebhook(ctx context.Context, payload []byte) (*WebhookEvent, error) {
 	var data map[string]interface{}
@@ -53,14 +45,6 @@ func (q *QRISAdapter) HandleWebhook(ctx context.Context, payload []byte) (*Webho
 	}, nil
 }
 
-func (q *QRISAdapter) Name() string {
-	return "QRIS Provider"
-}
-
-func (q *QRISAdapter) Type() ProviderType {
-	return QRIS
-}
-
-func (q *QRISAdapter) IsAvailable(ctx context.Context) bool {
-	return true
-}
+func (q *QRISAdapter) Name() string { return "QRIS Provider" }
+func (q *QRISAdapter) Type() ProviderType { return QRIS }
+func (q *QRISAdapter) IsAvailable(ctx context.Context) bool { return true }

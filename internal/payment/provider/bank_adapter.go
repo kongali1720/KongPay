@@ -13,10 +13,7 @@ type BankAdapter struct {
 }
 
 func NewBankAdapter(apiKey, baseURL string) *BankAdapter {
-	return &BankAdapter{
-		apiKey:  apiKey,
-		baseURL: baseURL,
-	}
+	return &BankAdapter{apiKey: apiKey, baseURL: baseURL}
 }
 
 func (b *BankAdapter) Process(ctx context.Context, req *PaymentRequest) (*PaymentResponse, error) {
@@ -29,15 +26,10 @@ func (b *BankAdapter) Process(ctx context.Context, req *PaymentRequest) (*Paymen
 }
 
 func (b *BankAdapter) Confirm(ctx context.Context, txID string) (*PaymentStatus, error) {
-	return &PaymentStatus{
-		Status:    "SUCCESS",
-		SettledAt: time.Now().UTC().Format(time.RFC3339),
-	}, nil
+	return &PaymentStatus{Status: "SUCCESS", SettledAt: time.Now().UTC().Format(time.RFC3339)}, nil
 }
 
-func (b *BankAdapter) Cancel(ctx context.Context, txID string) error {
-	return nil
-}
+func (b *BankAdapter) Cancel(ctx context.Context, txID string) error { return nil }
 
 func (b *BankAdapter) HandleWebhook(ctx context.Context, payload []byte) (*WebhookEvent, error) {
 	var data map[string]interface{}
@@ -52,17 +44,9 @@ func (b *BankAdapter) HandleWebhook(ctx context.Context, payload []byte) (*Webho
 	}, nil
 }
 
-func (b *BankAdapter) Name() string {
-	return "Bank Transfer Provider"
-}
-
-func (b *BankAdapter) Type() ProviderType {
-	return BankTransfer
-}
-
-func (b *BankAdapter) IsAvailable(ctx context.Context) bool {
-	return true
-}
+func (b *BankAdapter) Name() string { return "Bank Transfer Provider" }
+func (b *BankAdapter) Type() ProviderType { return BankTransfer }
+func (b *BankAdapter) IsAvailable(ctx context.Context) bool { return true }
 
 func getString(m map[string]interface{}, key string) string {
 	if val, ok := m[key]; ok {
