@@ -39,3 +39,55 @@ build/
 *.tar.gz
 prometheus-*.tar.gz
 data/
+# Environment files (keep sensitive)
+.env.local
+.env.*.local
+.env.fiat
+.env.crypto
+*.secret
+*.key
+*.pem
+
+# Crypto wallet data
+wallet/
+*.wallet
+*.mnemonic
+*.seed
+# ============================================
+# 🔒 SECRET FILES - JANGAN PERNAH DI-COMMIT!
+# ============================================
+
+# Environment files (semua .env)
+.env
+.env.*
+*.env
+.env.local
+.env.*.local
+
+# Crypto wallet files
+wallet/
+*.wallet
+*.mnemonic
+*.seed
+*.private
+*.key
+*.pem
+*.crt
+*.secret
+
+# SSL/TLS certificates
+ssl/
+*.crt
+*.key
+*.pem
+
+# Local development
+*.local
+*.development
+*.production
+
+# Backup files
+*.backup
+*.bak
+*.tar.gz
+*.zip
