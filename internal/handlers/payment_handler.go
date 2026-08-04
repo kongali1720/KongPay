@@ -3,9 +3,10 @@ package handlers
 import (
     "encoding/json"
     "net/http"
-    "kongpay/internal/payment/provider"
-    "kongpay/internal/payment/router"
-    "kongpay/internal/services"
+    
+    "github.com/kongali1720/KongPay/internal/payment/provider"
+    "github.com/kongali1720/KongPay/internal/payment/router"
+    "github.com/kongali1720/KongPay/internal/services"
 )
 
 type PaymentHandler struct {
@@ -28,12 +29,12 @@ func (h *PaymentHandler) ProcessPayment(w http.ResponseWriter, r *http.Request) 
         CustomerID string  `json:"customer_id"`
         MerchantID string  `json:"merchant_id"`
     }
-    
+
     if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
-    
+
     // Create payment request
     paymentReq := &provider.PaymentRequest{
         Amount:     req.Amount,
@@ -43,33 +44,33 @@ func (h *PaymentHandler) ProcessPayment(w http.ResponseWriter, r *http.Request) 
         MerchantID: req.MerchantID,
         Metadata:   make(map[string]interface{}),
     }
-    
+
     // Route to provider
     resp, err := h.paymentRouter.Route(r.Context(), paymentReq)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    
+
     // Return response
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(resp)
 }
 
 func (h *PaymentHandler) Webhook(w http.ResponseWriter, r *http.Request) {
-    // Get provider from query or header
-    providerType := r.URL.Query().Get("provider")
-    
     // Read body
     var payload []byte
-    r.Body.Read(payload)
+    if _, err := r.Body.Read(payload); err != nil {
+        http.Error(w, "Failed to read body", http.StatusBadRequest)
+        return
+    }
+
+    // TODO: Process webhook based on provider
+    // Get provider from query: r.URL.Query().Get("provider")
     
-    // Get provider
-    // TODO: Get provider from router
-    
-    // Process webhook
-    // event, err := provider.HandleWebhook(r.Context(), payload)
-    // Update transaction status
-    
+    w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
+    json.NewEncoder(w).Encode(map[string]string{
+        "status": "webhook_received",
+    })
 }
