@@ -17,7 +17,6 @@ func (h *PaymentHandler) Transfer(c *gin.Context) {
 }
 
 // Transfer handles transfer requests (Gin handler)
-func (h *PaymentHandler) Transfer(c *gin.Context) {
     var req struct {
         FromWalletID string  `json:"from_wallet_id"`
         ToWalletID   string  `json:"to_wallet_id"`
