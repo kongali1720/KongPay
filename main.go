@@ -1,17 +1,34 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+    "encoding/json"
+    "log"
+    "net/http"
+    "time"
 )
 
-func getBalance(w http.ResponseWriter, r *http.Request) {
-	// Nanti di sini kita akan ambil data dari PostgreSQL
-	fmt.Fprintf(w, "{\"user_id\": \"user123\", \"balance\": 100000.00}")
-}
-
 func main() {
-	http.HandleFunc("/api/v1/wallet/balance", getBalance)
-	fmt.Println("Wallet Service berjalan di port 8080...")
-	http.ListenAndServe(":8080", nil)
+    log.Println("🚀 KongPay v0.3.0")
+
+    http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Content-Type", "application/json")
+        json.NewEncoder(w).Encode(map[string]interface{}{
+            "status": "healthy",
+            "service": "KongPay",
+            "version": "0.3.0",
+            "timestamp": time.Now().UTC().Format(time.RFC3339),
+        })
+    })
+
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Content-Type", "application/json")
+        json.NewEncoder(w).Encode(map[string]interface{}{
+            "service": "KongPay",
+            "version": "0.3.0",
+            "status": "running",
+        })
+    })
+
+    log.Println("✅ Server running on :8080")
+    log.Fatal(http.ListenAndServe(":8080", nil))
 }
