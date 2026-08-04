@@ -52,6 +52,119 @@ Open Source • API First • Cloud Native • Built for Modern Financial Applic
 
 </p>
 
+---
+
+<div align="center">
+
+# KONGPAY
+
+### Payment Infrastructure
+
+<p>
+  <img src="https://img.shields.io/badge/Version-1.0.0--alpha.8.1-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Status-PRODUCTION%20READY-success?style=for-the-badge">
+</p>
+
+<p>
+  <b>💳 Payment Processing</b>
+  &nbsp;•&nbsp;
+  <b>🔄 Webhook Handler</b>
+  &nbsp;•&nbsp;
+  <b>💰 Settlement Engine</b>
+</p>
+
+---
+
+## ⚙️ Core Services
+
+<table align="center">
+<tr>
+<td align="center">
+
+### 💰 Settlement Engine
+
+**ENABLED**
+
+</td>
+<td align="center">
+
+### 🔄 Webhook Handler
+
+**ENABLED**
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🌐 API Endpoints
+
+<table align="center">
+<thead>
+<tr>
+<th>Service</th>
+<th>Method</th>
+<th>Endpoint</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>📊 Health Check</td>
+<td><code>GET</code></td>
+<td><code>/health</code></td>
+</tr>
+
+<tr>
+<td>💳 Payment</td>
+<td><code>POST</code></td>
+<td><code>/api/v1/payments</code></td>
+</tr>
+
+<tr>
+<td>🔄 Payment Webhook</td>
+<td><code>POST</code></td>
+<td><code>/api/v1/webhooks/payment</code></td>
+</tr>
+
+<tr>
+<td>💰 Settlement</td>
+<td><code>GET</code></td>
+<td><code>/api/v1/settlement/:tx_id</code></td>
+</tr>
+
+<tr>
+<td>📈 Settlement Stats</td>
+<td><code>GET</code></td>
+<td><code>/api/v1/settlement/stats</code></td>
+</tr>
+
+</tbody>
+</table>
+
+---
+
+### 📍 Local API
+
+<code>http://localhost:8080</code>
+
+<br><br>
+
+**PAYMENT** &nbsp;•&nbsp;
+**WEBHOOK** &nbsp;•&nbsp;
+**SETTLEMENT** &nbsp;•&nbsp;
+**MONITORING**
+
+<br><br>
+
+<sub>Built for Modern Payment Infrastructure</sub>
+
+</div>
+
+---
+
 # 🚀 Executive Summary
 
 **KongPay** is an open-source **digital payment infrastructure platform** built with **Go**, designed to provide a modular, scalable, and secure foundation for next-generation financial applications.
