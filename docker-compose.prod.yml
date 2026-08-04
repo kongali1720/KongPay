@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-kongpay}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kongpay:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME: ${DB_NAME:-kongpay}
+      DB_SSL_MODE: disable
+      PORT: 8080
+      BANK_API_KEY: ${BANK_API_KEY}
+      BANK_BASE_URL: ${BANK_BASE_URL}
+      QRIS_MERCHANT_ID: ${QRIS_MERCHANT_ID}
+      QRIS_API_KEY: ${QRIS_API_KEY}
+      QRIS_BASE_URL: ${QRIS_BASE_URL}
+      CRYPTO_NETWORK: ${CRYPTO_NETWORK}
+      CRYPTO_RPC_URL: ${CRYPTO_RPC_URL}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - kongpay
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
