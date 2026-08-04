@@ -20,7 +20,7 @@ func main() {
         Host:     getEnv("DB_HOST", "localhost"),
         Port:     getEnv("DB_PORT", "5432"),
         User:     getEnv("DB_USER", "postgres"),
-        Password: getEnv("DB_PASSWORD", "password"),
+        Password: getEnv("DB_PASSWORD", "postgres"),
         DBName:   getEnv("DB_NAME", "kongpay"),
         SSLMode:  getEnv("DB_SSL_MODE", "disable"),
     }
@@ -30,13 +30,14 @@ func main() {
     if err != nil {
         log.Printf("⚠️  Database connection failed: %v", err)
         log.Println("✅ Running without database (development mode)")
-        // Continue without DB for now
     } else {
         defer db.Close()
-        log.Println("✅ Database connected")
+        log.Println("✅ Database connected successfully!")
     }
 
-    log.Println("🚀 KongPay v0.4.0 Starting...")
+    log.Println("🚀 KongPay v1.0.0-alpha.8.1 Starting...")
+    log.Println("💰 Settlement Engine: ENABLED")
+    log.Println("🔄 Webhook Handler: ENABLED")
 
     // Setup router
     r := router.SetupRouter(db)
@@ -44,6 +45,9 @@ func main() {
     port := getEnv("PORT", "8080")
     log.Printf("✅ Server running on http://localhost:%s", port)
     log.Printf("📊 Health check: http://localhost:%s/health", port)
+    log.Printf("💳 Payment endpoint: http://localhost:%s/api/v1/payments", port)
+    log.Printf("🔄 Webhook endpoint: http://localhost:%s/api/v1/webhooks/payment", port)
+    log.Printf("💰 Settlement stats: http://localhost:%s/api/v1/settlement/stats", port)
 
     if err := r.Run(":" + port); err != nil {
         log.Fatalf("❌ Failed to start server: %v", err)
