@@ -1,26 +1,34 @@
 package main
 
 import (
+    "encoding/json"
     "log"
     "net/http"
-
-    "github.com/kongali1720/KongPay/internal/handlers"
-    "github.com/kongali1720/KongPay/internal/payment/provider"
-    "github.com/kongali1720/KongPay/internal/payment/router"
-    "github.com/kongali1720/KongPay/internal/services"
+    "time"
 )
 
 func main() {
-    paymentRouter := router.NewPaymentRouter()
-    bankProvider := provider.NewBankAdapter("your-api-key", "https://bank-api.com")
-    paymentRouter.Register(bankProvider)
+    log.Println("🚀 KongPay v0.3.0")
 
-    txService := services.NewTransactionService()
-    paymentHandler := handlers.NewPaymentHandler(paymentRouter, txService)
+    http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Content-Type", "application/json")
+        json.NewEncoder(w).Encode(map[string]interface{}{
+            "status": "healthy",
+            "service": "KongPay",
+            "version": "0.3.0",
+            "timestamp": time.Now().UTC().Format(time.RFC3339),
+        })
+    })
 
-    http.HandleFunc("/api/v1/payments", paymentHandler.ProcessPayment)
-    http.HandleFunc("/api/v1/webhooks/payment", paymentHandler.Webhook)
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Content-Type", "application/json")
+        json.NewEncoder(w).Encode(map[string]interface{}{
+            "service": "KongPay",
+            "version": "0.3.0",
+            "status": "running",
+        })
+    })
 
-    log.Println("🚀 KongPay Server starting on :8080")
+    log.Println("✅ Server running on :8080")
     log.Fatal(http.ListenAndServe(":8080", nil))
 }
