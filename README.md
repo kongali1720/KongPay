@@ -120,6 +120,40 @@ flowchart TD
     Cache -. Cache Layer .-> Service
 ```
 
+```mermaid
+
+graph TB
+    subgraph Client
+        A[HTTP Request]
+    end
+    
+    subgraph KongPay
+        B[Gin Router]
+        C[Payment Handler]
+        D[Payment Router]
+        
+        subgraph Providers
+            E[Bank Adapter]
+            F[QRIS Adapter]
+            G[Crypto Adapter]
+        end
+        
+        subgraph Database
+            H[(PostgreSQL)]
+            I[Transaction Repository]
+        end
+    end
+    
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    D --> F
+    D --> G
+    C --> I
+    I --> H
+```
+
 ### Architecture Principles
 
 - 🧩 Clean Architecture
