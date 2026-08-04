@@ -1,17 +1,34 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+    "log"
+    "net/http"
+    
+    "kongpay/internal/handlers"
+    "kongpay/internal/payment/provider"
+    "kongpay/internal/payment/router"
+    "kongpay/internal/services"
 )
 
-func getBalance(w http.ResponseWriter, r *http.Request) {
-	// Nanti di sini kita akan ambil data dari PostgreSQL
-	fmt.Fprintf(w, "{\"user_id\": \"user123\", \"balance\": 100000.00}")
-}
-
 func main() {
-	http.HandleFunc("/api/v1/wallet/balance", getBalance)
-	fmt.Println("Wallet Service berjalan di port 8080...")
-	http.ListenAndServe(":8080", nil)
+    // Initialize payment router
+    paymentRouter := router.NewPaymentRouter()
+    
+    // Register providers
+    bankProvider := provider.NewBankAdapter("your-api-key", "https://bank-api.com")
+    paymentRouter.Register(bankProvider)
+    
+    // Initialize services
+    txService := services.NewTransactionService()
+    
+    // Initialize handlers
+    paymentHandler := handlers.NewPaymentHandler(paymentRouter, txService)
+    
+    // Setup routes
+    http.HandleFunc("/api/v1/payments", paymentHandler.ProcessPayment)
+    http.HandleFunc("/api/v1/webhooks/payment", paymentHandler.Webhook)
+    
+    // Start server
+    log.Println("Server starting on :8080")
+    log.Fatal(http.ListenAndServe(":8080", nil))
 }
