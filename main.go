@@ -1,73 +1,58 @@
 package main
 
 import (
-    "encoding/json"
     "log"
-    "net/http"
-    "time"
+    "os"
 
-    "github.com/kongali1720/KongPay/internal/handlers"
-    "github.com/kongali1720/KongPay/internal/payment/provider"
-    "github.com/kongali1720/KongPay/internal/payment/router"
-    "github.com/kongali1720/KongPay/internal/services"
+    "github.com/joho/godotenv"
+    "github.com/kongali1720/KongPay/internal/database"
+    "github.com/kongali1720/KongPay/internal/router"
 )
 
 func main() {
-    log.Println("🚀 KongPay v0.3.0 Starting...")
+    // Load .env
+    if err := godotenv.Load(); err != nil {
+        log.Println("⚠️  No .env file found, using environment variables")
+    }
 
-    // Initialize payment router
-    paymentRouter := router.NewPaymentRouter()
+    // Database config
+    dbConfig := database.Config{
+        Host:     getEnv("DB_HOST", "localhost"),
+        Port:     getEnv("DB_PORT", "5432"),
+        User:     getEnv("DB_USER", "postgres"),
+        Password: getEnv("DB_PASSWORD", "password"),
+        DBName:   getEnv("DB_NAME", "kongpay"),
+        SSLMode:  getEnv("DB_SSL_MODE", "disable"),
+    }
 
-    // Register providers
-    bankProvider := provider.NewBankAdapter("your-api-key", "https://bank-api.com")
-    qrisProvider := provider.NewQRISAdapter("merchant-123", "qris-api-key", "https://qris-api.com")
-    cryptoProvider := provider.NewCryptoAdapter("ethereum", "https://rpc.ethereum.org")
+    // Connect to database
+    db, err := database.NewPostgresDB(dbConfig)
+    if err != nil {
+        log.Printf("⚠️  Database connection failed: %v", err)
+        log.Println("✅ Running without database (development mode)")
+        // Continue without DB for now
+    } else {
+        defer db.Close()
+        log.Println("✅ Database connected")
+    }
 
-    paymentRouter.Register(bankProvider)
-    paymentRouter.Register(qrisProvider)
-    paymentRouter.Register(cryptoProvider)
+    log.Println("🚀 KongPay v0.4.0 Starting...")
 
-    // Initialize services
-    txService := services.NewTransactionService()
+    // Setup router
+    r := router.SetupRouter(db)
 
-    // Initialize handlers
-    paymentHandler := handlers.NewPaymentHandler(paymentRouter, txService)
+    port := getEnv("PORT", "8080")
+    log.Printf("✅ Server running on http://localhost:%s", port)
+    log.Printf("📊 Health check: http://localhost:%s/health", port)
 
-    // Setup routes
-    http.HandleFunc("/api/v1/payments", paymentHandler.ProcessPayment)
-    http.HandleFunc("/api/v1/webhooks/payment", paymentHandler.Webhook)
+    if err := r.Run(":" + port); err != nil {
+        log.Fatalf("❌ Failed to start server: %v", err)
+    }
+}
 
-    // Health check endpoint
-    http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-        w.Header().Set("Content-Type", "application/json")
-        w.WriteHeader(http.StatusOK)
-        json.NewEncoder(w).Encode(map[string]interface{}{
-            "service":   "KongPay",
-            "version":   "0.3.0",
-            "status":    "healthy",
-            "timestamp": time.Now().UTC().Format(time.RFC3339),
-        })
-    })
-
-    // Root endpoint
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        w.Header().Set("Content-Type", "application/json")
-        w.WriteHeader(http.StatusOK)
-        json.NewEncoder(w).Encode(map[string]interface{}{
-            "service": "KongPay",
-            "version": "0.3.0",
-            "status":  "running",
-            "endpoints": []string{
-                "GET  /health",
-                "GET  /",
-                "POST /api/v1/payments",
-                "POST /api/v1/webhooks/payment",
-            },
-        })
-    })
-
-    port := ":8080"
-    log.Printf("✅ Server running on http://localhost%s", port)
-    log.Printf("📊 Health check: http://localhost%s/health", port)
-    log.Fatal(http.ListenAndServe(port, nil))
+func getEnv(key, fallback string) string {
+    if value, exists := os.LookupEnv(key); exists && value != "" {
+        return value
+    }
+    return fallback
 }

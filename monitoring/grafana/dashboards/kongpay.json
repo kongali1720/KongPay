@@ -1,0 +1,47 @@
+{
+  "title": "KongPay Dashboard",
+  "uid": "kongpay",
+  "version": 1,
+  "panels": [
+    {
+      "title": "Total Transactions",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(kongpay_transactions_total)",
+          "legendFormat": "Transactions"
+        }
+      ]
+    },
+    {
+      "title": "Transaction Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(kongpay_transactions_total[5m])",
+          "legendFormat": "req/s"
+        }
+      ]
+    },
+    {
+      "title": "Payment Methods",
+      "type": "piechart",
+      "targets": [
+        {
+          "expr": "sum by (method) (kongpay_transactions_total)",
+          "legendFormat": "{{method}}"
+        }
+      ]
+    },
+    {
+      "title": "Response Time",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(kongpay_request_duration_bucket[5m])) by (le))",
+          "legendFormat": "P95"
+        }
+      ]
+    }
+  ]
+}
