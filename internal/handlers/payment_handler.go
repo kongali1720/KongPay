@@ -74,3 +74,23 @@ func (h *PaymentHandler) Webhook(w http.ResponseWriter, r *http.Request) {
         "status": "webhook_received",
     })
 }
+
+func (h *PaymentHandler) Transfer(c *gin.Context) {
+    var req struct {
+        FromWalletID string  `json:"from_wallet_id"`
+        ToWalletID   string  `json:"to_wallet_id"`
+        Amount       float64 `json:"amount"`
+        Currency     string  `json:"currency"`
+    }
+
+    if err := c.ShouldBindJSON(&req); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    // TODO: Implement transfer logic
+    c.JSON(http.StatusOK, gin.H{
+        "status":  "success",
+        "message": "Transfer processed",
+    })
+}
