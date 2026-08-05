@@ -10,6 +10,7 @@ const (
 	VirtualAccount ProviderType = "VIRTUAL_ACCOUNT"
 	Card           ProviderType = "CARD"
 	Crypto         ProviderType = "CRYPTO"
+	ManualFiat     ProviderType = "MANUAL_FIAT"
 )
 
 type PaymentProvider interface {
@@ -33,13 +34,14 @@ type PaymentRequest struct {
 }
 
 type PaymentResponse struct {
-	TransactionID  string `json:"transaction_id"`
-	ProviderTxID   string `json:"provider_tx_id"`
-	Status         string `json:"status"`
-	RedirectURL    string `json:"redirect_url,omitempty"`
-	QRCode         string `json:"qr_code,omitempty"`
-	VirtualAccount string `json:"virtual_account,omitempty"`
-	Error          string `json:"error,omitempty"`
+	TransactionID  string                 `json:"transaction_id"`
+	ProviderTxID   string                 `json:"provider_tx_id"`
+	Status         string                 `json:"status"`
+	RedirectURL    string                 `json:"redirect_url,omitempty"`
+	QRCode         string                 `json:"qr_code,omitempty"`
+	VirtualAccount string                 `json:"virtual_account,omitempty"`
+	Error          string                 `json:"error,omitempty"`
+	Metadata       map[string]interface{} `json:"metadata,omitempty"`
 }
 
 type PaymentStatus struct {

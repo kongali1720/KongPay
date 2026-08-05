@@ -13,11 +13,16 @@ import (
     "github.com/kongali1720/KongPay/internal/services"
 )
 
-func SetupRouter(db *pgxpool.Pool) *gin.Engine {
+func SetupRouter(db interface{}) *gin.Engine {
     r := gin.Default()
 
     // Services
-    txService := services.NewTransactionService(db)
+    var txService *services.TransactionService
+    if db != nil {
+        txService = services.NewTransactionService(db.(*pgxpool.Pool))
+    } else {
+        txService = services.NewTransactionService(nil)
+    }
 
     // Payment Router
     paymentRouter := router.NewPaymentRouter()
@@ -28,15 +33,19 @@ func SetupRouter(db *pgxpool.Pool) *gin.Engine {
     paymentRouter.Register(provider.NewQRISAdapter(
         getEnv("QRIS_MERCHANT_ID", "dummy"),
         getEnv("QRIS_API_KEY", "dummy"),
-        getEnv("QRIS_BASE_URL", "https://qris-api.com"),
     ))
     paymentRouter.Register(provider.NewCryptoAdapter(
         getEnv("CRYPTO_NETWORK", "ethereum"),
         getEnv("CRYPTO_RPC_URL", "https://rpc.ethereum.org"),
     ))
+    // Register Manual Fiat
+    paymentRouter.Register(provider.NewManualFiatAdapter())
 
-    // Handlers - Buat wrapper Gin
+    // Handlers
     paymentHandler := handlers.NewPaymentHandler(paymentRouter, txService)
+
+    // Crypto Handler
+    cryptoHandler, _ := handlers.NewCryptoPaymentHandler(txService)
 
     // Routes
     r.GET("/health", func(c *gin.Context) {
@@ -53,20 +62,12 @@ func SetupRouter(db *pgxpool.Pool) *gin.Engine {
             "service": "KongPay",
             "version": "1.0.0-alpha.8.1",
             "status":  "running",
-            "endpoints": []string{
-                "GET  /health",
-                "GET  /",
-                "POST /api/v1/payments",
-                "POST /api/v1/webhooks/payment",
-                "GET  /api/v1/settlement/stats",
-                "GET  /api/v1/settlement/:transaction_id",
-            },
         })
     })
 
     api := r.Group("/api/v1")
     {
-        // Payment routes - wrap with Gin context
+        // Payment routes
         api.POST("/payments", func(c *gin.Context) {
             paymentHandler.ProcessPayment(c.Writer, c.Request)
         })
@@ -93,6 +94,17 @@ func SetupRouter(db *pgxpool.Pool) *gin.Engine {
             }
             c.JSON(200, status)
         })
+
+        // Crypto endpoints
+        if cryptoHandler != nil {
+            crypto := api.Group("/crypto")
+            {
+                crypto.POST("/wallet/generate", cryptoHandler.GenerateCryptoWallet)
+                crypto.GET("/monitor", func(c *gin.Context) {
+                    c.JSON(200, gin.H{"status": "listening"})
+                })
+            }
+        }
 
         // Auth routes
         auth := api.Group("/auth")

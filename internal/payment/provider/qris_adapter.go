@@ -10,14 +10,12 @@ import (
 type QRISAdapter struct {
     merchantID string
     apiKey     string
-    baseURL    string
 }
 
-func NewQRISAdapter(merchantID, apiKey, baseURL string) *QRISAdapter {
+func NewQRISAdapter(merchantID, apiKey string) *QRISAdapter {
     return &QRISAdapter{
         merchantID: merchantID,
         apiKey:     apiKey,
-        baseURL:    baseURL,
     }
 }
 
@@ -64,5 +62,3 @@ func (q *QRISAdapter) Type() ProviderType {
 func (q *QRISAdapter) IsAvailable(ctx context.Context) bool {
     return true
 }
-
-// getStringValue helper function

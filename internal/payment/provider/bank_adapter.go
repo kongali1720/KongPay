@@ -63,5 +63,3 @@ func (b *BankAdapter) Type() ProviderType {
 func (b *BankAdapter) IsAvailable(ctx context.Context) bool {
     return true
 }
-
-// getStringValue helper function

@@ -64,4 +64,4 @@ func (c *CryptoAdapter) IsAvailable(ctx context.Context) bool {
     return true
 }
 
-// getStringValue helper function
+// Helper function

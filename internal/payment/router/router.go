@@ -49,8 +49,10 @@ func (r *PaymentRouter) selectProvider(req *provider.PaymentRequest) provider.Pr
         return provider.BankTransfer
     case "QRIS", "qris":
         return provider.QRIS
-    case "CRYPTO", "crypto", "USDT", "USDC":
+    case "CRYPTO", "crypto", "USDT", "USDC", "ETH":
         return provider.Crypto
+    case "MANUAL_FIAT", "manual_fiat", "manual":
+        return provider.ManualFiat
     default:
         return provider.BankTransfer
     }
@@ -61,6 +63,7 @@ func (r *PaymentRouter) fallback(ctx context.Context, req *provider.PaymentReque
         provider.BankTransfer,
         provider.QRIS,
         provider.Crypto,
+        provider.ManualFiat,
     }
 
     for _, pt := range fallbacks {
