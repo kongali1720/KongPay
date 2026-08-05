@@ -2,6 +2,7 @@ package payment
 
 import (
     "context"
+    "fmt"
     "time"
 
     "github.com/google/uuid"
@@ -20,9 +21,11 @@ func NewService(txRepo *repositories.TransactionRepository) *Service {
 }
 
 func (s *Service) CreateTransaction(ctx context.Context, amount float64, currency, method, customerID, merchantID string) (*models.Transaction, error) {
+    txID := "KONG-" + uuid.New().String()[:8]
+
     transaction := &models.Transaction{
         ID:           uuid.New().String(),
-        TransactionID: "KONG-" + uuid.New().String()[:8],
+        TransactionID: txID,
         Amount:       amount,
         Currency:     currency,
         Method:       method,
@@ -31,10 +34,11 @@ func (s *Service) CreateTransaction(ctx context.Context, amount float64, currenc
         MerchantID:   merchantID,
         CreatedAt:    time.Now(),
         UpdatedAt:    time.Now(),
+        Metadata:     make(map[string]interface{}),
     }
 
     if err := s.TxRepo.Create(ctx, transaction); err != nil {
-        return nil, err
+        return nil, fmt.Errorf("failed to create transaction: %w", err)
     }
 
     return transaction, nil
@@ -46,4 +50,8 @@ func (s *Service) GetTransaction(ctx context.Context, transactionID string) (*mo
 
 func (s *Service) UpdateTransactionStatus(ctx context.Context, transactionID, status string) error {
     return s.TxRepo.UpdateStatus(ctx, transactionID, status)
+}
+
+func (s *Service) UpdateTransactionSettled(ctx context.Context, transactionID string) error {
+    return s.TxRepo.UpdateSettled(ctx, transactionID)
 }
