@@ -1,29 +1,42 @@
 package main
 
 import (
-	"log"
+    "log"
+    "os"
 
-	"github.com/kongali1720/KongPay/internal/config"
-	"github.com/kongali1720/KongPay/internal/database"
-	"github.com/kongali1720/KongPay/internal/router"
+    "github.com/joho/godotenv"
+    "github.com/kongali1720/KongPay/internal/database"
+    "github.com/kongali1720/KongPay/internal/router"
 )
 
 func main() {
+    // Load .env
+    if err := godotenv.Load(); err != nil {
+        log.Println("⚠️ No .env file found, using environment variables")
+    }
 
-	cfg := config.Load()
+    // Database connection
+    db, err := database.NewConnection()
+    if err != nil {
+        log.Printf("⚠️ Database connection failed: %v", err)
+        log.Println("✅ Running without database (development mode)")
+    } else {
+        defer db.Close()
+        log.Println("✅ Database connected successfully!")
+    }
 
-	log.Printf("Starting %s...", cfg.AppName)
+    // Setup router
+    r := router.SetupRouter(db)
 
-	if err := database.Connect(); err != nil {
-		log.Fatalf("Database connection failed: %v", err)
-	}
-	defer database.Close()
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080"
+    }
 
-	r := router.Setup(database.DB)
+    log.Printf("✅ Server running on http://localhost:%s", port)
+    log.Printf("📊 Health check: http://localhost:%s/health", port)
 
-	log.Printf("Listening on :%s", cfg.Port)
-
-	if err := r.Run(":" + cfg.Port); err != nil {
-		log.Fatal(err)
-	}
+    if err := r.Run(":" + port); err != nil {
+        log.Fatalf("❌ Failed to start server: %v", err)
+    }
 }

@@ -1,160 +1,49 @@
 package payment
 
 import (
-	"context"
-	"errors"
+    "context"
+    "time"
 
-	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5"
-
-	"github.com/kongali1720/KongPay/internal/models"
-	"github.com/kongali1720/KongPay/internal/repositories"
+    "github.com/google/uuid"
+    "github.com/kongali1720/KongPay/internal/models"
+    "github.com/kongali1720/KongPay/internal/repositories"
 )
 
 type Service struct {
-	DB         *pgx.Conn
-	WalletRepo *repositories.WalletRepository
-	TxRepo     *repositories.TransactionRepository
-	LedgerRepo *repositories.LedgerRepository
+    TxRepo *repositories.TransactionRepository
 }
 
-func NewService(
-	db *pgx.Conn,
-	wallet *repositories.WalletRepository,
-	txRepo *repositories.TransactionRepository,
-	ledger *repositories.LedgerRepository,
-) *Service {
-
-	return &Service{
-		DB:         db,
-		WalletRepo: wallet,
-		TxRepo:     txRepo,
-		LedgerRepo: ledger,
-	}
+func NewService(txRepo *repositories.TransactionRepository) *Service {
+    return &Service{
+        TxRepo: txRepo,
+    }
 }
 
-func (s *Service) Transfer(
-	ctx context.Context,
-	req TransferRequest,
-) (*TransferResponse, error) {
+func (s *Service) CreateTransaction(ctx context.Context, amount float64, currency, method, customerID, merchantID string) (*models.Transaction, error) {
+    transaction := &models.Transaction{
+        ID:           uuid.New().String(),
+        TransactionID: "KONG-" + uuid.New().String()[:8],
+        Amount:       amount,
+        Currency:     currency,
+        Method:       method,
+        Status:       "PENDING",
+        CustomerID:   customerID,
+        MerchantID:   merchantID,
+        CreatedAt:    time.Now(),
+        UpdatedAt:    time.Now(),
+    }
 
-	tx, err := s.DB.Begin(ctx)
-	if err != nil {
-		return nil, err
-	}
+    if err := s.TxRepo.Create(ctx, transaction); err != nil {
+        return nil, err
+    }
 
-	defer tx.Rollback(ctx)
-
-	sender, err := s.WalletRepo.GetWalletByID(
-		ctx,
-		req.SenderWalletID,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	receiver, err := s.WalletRepo.GetWalletByID(
-		ctx,
-		req.ReceiverWalletID,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	if sender.Balance < req.Amount {
-		return nil, errors.New("insufficient balance")
-	}
-
-	senderBefore := sender.Balance
-	receiverBefore := receiver.Balance
-
-	sender.Balance -= req.Amount
-	receiver.Balance += req.Amount
-
-	if err := s.WalletRepo.UpdateBalanceTx(
-		ctx,
-		tx,
-		sender.ID,
-		sender.Balance,
-	); err != nil {
-		return nil, err
-	}
-
-	if err := s.WalletRepo.UpdateBalanceTx(
-		ctx,
-		tx,
-		receiver.ID,
-		receiver.Balance,
-	); err != nil {
-		return nil, err
-	}
-
-	transaction := &models.Transaction{
-		ID:               uuid.New(),
-		ReferenceNo:      GenerateReference(),
-		SenderWalletID:   sender.ID,
-		ReceiverWalletID: receiver.ID,
-		Amount:           req.Amount,
-		Currency:         req.Currency,
-		Status:           "SUCCESS",
-	}
-
-	if err := s.TxRepo.Create(
-		ctx,
-		tx,
-		transaction,
-	); err != nil {
-		return nil, err
-	}
-
-	debit := &models.LedgerEntry{
-		ID:            uuid.New(),
-		TransactionID: transaction.ID,
-		WalletID:      sender.ID,
-		EntryType:     "DEBIT",
-		Amount:        req.Amount,
-		BalanceBefore: senderBefore,
-		BalanceAfter:  sender.Balance,
-	}
-
-	if err := s.LedgerRepo.Create(
-		ctx,
-		tx,
-		debit,
-	); err != nil {
-		return nil, err
-	}
-
-	credit := &models.LedgerEntry{
-		ID:            uuid.New(),
-		TransactionID: transaction.ID,
-		WalletID:      receiver.ID,
-		EntryType:     "CREDIT",
-		Amount:        req.Amount,
-		BalanceBefore: receiverBefore,
-		BalanceAfter:  receiver.Balance,
-	}
-
-	if err := s.LedgerRepo.Create(
-		ctx,
-		tx,
-		credit,
-	); err != nil {
-		return nil, err
-	}
-
-	if err := tx.Commit(ctx); err != nil {
-		return nil, err
-	}
-
-	return &TransferResponse{
-		Success:     true,
-		ReferenceNo: transaction.ReferenceNo,
-		Status:      "SUCCESS",
-		Message:     "transfer completed",
-	}, nil
+    return transaction, nil
 }
 
-func GenerateReference() string {
-	return "KP-" + uuid.New().String()
+func (s *Service) GetTransaction(ctx context.Context, transactionID string) (*models.Transaction, error) {
+    return s.TxRepo.GetByID(ctx, transactionID)
+}
+
+func (s *Service) UpdateTransactionStatus(ctx context.Context, transactionID, status string) error {
+    return s.TxRepo.UpdateStatus(ctx, transactionID, status)
 }
