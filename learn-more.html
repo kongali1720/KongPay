@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn More - KongaliCoin</title>
+    <meta name="description" content="Discover more about KongaliCoin, the world's most trusted cryptocurrency trading platform">
+    
+    <link rel="icon" type="image/png" href="logo-KAC-transparant.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: #0a0a12;
+            scroll-behavior: smooth;
+            color: #e5e7eb;
+        }
+        
+        /* ===== HERO - SAMA DENGAN INDEX.HTML ===== */
+        .hero-learn { 
+            background: url('kop_surat.jpg');
+            background-size: contain;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 60vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 40px 0;
+            position: relative;
+            background-color: #0a0a12;
+        }
+        
+        .hero-learn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 18, 0.6) 0%,
+                rgba(10, 10, 18, 0.2) 50%,
+                rgba(10, 10, 18, 0.6) 100%
+            );
+            z-index: 1;
+        }
+        
+        .hero-learn .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* ===== ANIMASI ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .fade-in { animation: fadeInUp 0.8s ease forwards; }
+        .fade-in-delay-1 { animation-delay: 0.1s; }
+        .fade-in-delay-2 { animation-delay: 0.2s; }
+        .fade-in-delay-3 { animation-delay: 0.3s; }
+        .float-animation { animation: float 4s ease-in-out infinite; }
+        .pulse-animation { animation: pulse 2s ease-in-out infinite; }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+        
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: rgba(10, 10, 18, 0.85);
+            backdrop-filter: blur(16px);
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .navbar .container { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+        .logo img { height: 40px; width: 40px; border-radius: 10px; }
+        .logo .logo-text { 
+            background: linear-gradient(135deg, #a78bfa, #7c3aed); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text; 
+        }
+        .btn-back {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            border: 1px solid rgba(255,255,255,0.06);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-back:hover { 
+            color: white; 
+            background: rgba(124, 58, 237, 0.1);
+            border-color: rgba(124, 58, 237, 0.2);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(124, 58, 237, 0.15);
+            color: #a78bfa;
+            margin-bottom: 12px;
+            border: 1px solid rgba(124, 58, 237, 0.1);
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+            .text-5xl { font-size: 32px; }
+            .text-4xl { font-size: 28px; }
+            .text-3xl { font-size: 24px; }
+            .hero-learn { min-height: 50vh; padding: 40px 0; background-attachment: scroll; }
+        }
+        
+        .text-white { color: #ffffff; }
+        .text-purple { color: #8b5cf6; }
+        .text-purple-light { color: #a78bfa; }
+        .text-gray { color: #9ca3af; }
+        .text-gray-light { color: #d1d5db; }
+        .text-center { text-align: center; }
+        .text-5xl { font-size: 52px; font-weight: 900; line-height: 1.1; }
+        .text-4xl { font-size: 38px; font-weight: 900; }
+        .text-3xl { font-size: 30px; font-weight: 800; }
+        .text-2xl { font-size: 24px; font-weight: 700; }
+        .text-xl { font-size: 20px; }
+        .text-lg { font-size: 18px; }
+        .font-bold { font-weight: 700; }
+        .font-black { font-weight: 900; }
+        .font-semibold { font-weight: 600; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-3 { margin-bottom: 12px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mb-6 { margin-bottom: 24px; }
+        .mb-8 { margin-bottom: 32px; }
+        .mb-10 { margin-bottom: 40px; }
+        .mt-4 { margin-top: 16px; }
+        .mt-8 { margin-top: 32px; }
+        
+        /* ===== GRID ===== */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        @media (max-width: 992px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .grid-3 { grid-template-columns: 1fr; }
+            .grid-4 { grid-template-columns: 1fr; }
+        }
+        
+        /* ===== CARDS ===== */
+        .card-dark {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .card-dark:hover {
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .card-dark .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(124, 58, 237, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 16px;
+            transition: all 0.3s ease;
+        }
+        .card-dark:hover .icon-wrapper {
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            transform: scale(1.05) rotate(-3deg);
+        }
+        .card-dark:hover .icon-wrapper i { color: white; }
+        .card-dark .icon-wrapper i { color: #a78bfa; transition: all 0.3s ease; }
+        .card-dark h3 { color: white; font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .card-dark p { color: #9ca3af; font-size: 15px; line-height: 1.7; }
+        
+        /* ===== SECTION ===== */
+        section { padding: 80px 0; }
+        section.bg-dark { background: #0a0a12; }
+        section.bg-dark-2 { background: #11111e; }
+        section.bg-gradient {
+            background: linear-gradient(135deg, #0a0a12, #1a0a2e);
+            position: relative;
+            overflow: hidden;
+        }
+        section.bg-gradient::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(124, 58, 237, 0.05), transparent 70%);
+            z-index: 0;
+        }
+        section.bg-gradient .container { position: relative; z-index: 1; }
+        
+        /* ===== BUTTON ===== */
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(124, 58, 237, 0.5);
+        }
+        
+        .btn-outline {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 14px;
+            border: 2px solid rgba(255,255,255,0.15);
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-outline:hover {
+            background: white;
+            color: #7c3aed;
+            border-color: white;
+            transform: translateY(-4px);
+        }
+        
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 20px;
+            padding: 30px;
+        }
+        .stats-bar .stat-item { text-align: center; }
+        .stats-bar .stat-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: white;
+        }
+        .stats-bar .stat-number .plus { color: #a78bfa; }
+        .stats-bar .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-bar { grid-template-columns: 1fr 1fr; gap: 16px; }
+            .stats-bar .stat-number { font-size: 28px; }
+        }
+        
+        /* ===== JOURNEY CARD ===== */
+        .journey-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        .journey-card:hover {
+            border-color: rgba(139, 92, 246, 0.2);
+            transform: translateY(-4px);
+        }
+        .journey-card .step {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .journey-card h3 { color: white; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .journey-card p { color: #9ca3af; font-size: 15px; line-height: 1.7; }
+        
+        /* ===== MISSION ICON ===== */
+        .mission-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(124, 58, 237, 0.08);
+            border: 1px solid rgba(124, 58, 237, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+            transition: all 0.3s ease;
+        }
+        .mission-icon i { color: #a78bfa; }
+        
+        /* ===== CTA BOX ===== */
+        .cta-box {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(79, 70, 229, 0.05));
+            border: 1px solid rgba(124, 58, 237, 0.1);
+            border-radius: 24px;
+            padding: 50px 30px;
+        }
+        
+        /* ===== FOOTER ===== */
+        footer {
+            background: #06060e;
+            padding: 50px 0 30px;
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+        footer .logo { justify-content: center; margin-bottom: 8px; }
+        footer .footer-social {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 16px 0;
+        }
+        footer .footer-social a {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        footer .footer-social a:hover {
+            background: rgba(124, 58, 237, 0.15);
+            color: #a78bfa;
+            border-color: rgba(124, 58, 237, 0.2);
+            transform: translateY(-3px);
+        }
+        footer .footer-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+        footer .footer-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+        footer .footer-links a:hover { color: #a78bfa; }
+        .footer-divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            margin: 12px auto;
+            border-radius: 4px;
+        }
+        
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6d28d9; }
+        
+        /* ===== REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .status-dot.green { background: #34d399; }
+    </style>
+</head>
+<body>
+
+<!-- ========================================== -->
+<!-- NAVBAR -->
+<!-- ========================================== -->
+<nav class="navbar">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="logo-KAC-transparant.png" alt="KAC Logo">
+            <span class="logo-text">KongaliCoin</span>
+        </a>
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+</nav>
+
+<!-- ========================================== -->
+<!-- HERO - DENGAN GAMBAR LATAR -->
+<!-- ========================================== -->
+<section class="hero-learn">
+    <div class="container">
+        <div class="grid-2">
+            <div class="fade-in">
+                <div class="badge">
+                    <i class="fas fa-info-circle" style="margin-right: 6px;"></i> About Us
+                </div>
+                <h1 class="text-5xl font-black mb-4 text-white">
+                    About <br><span style="color: #a78bfa;">KongaliCoin</span>
+                </h1>
+                <p class="text-xl text-gray-light mb-6" style="line-height: 1.8;">
+                    The world's most trusted cryptocurrency trading platform, serving millions of users worldwide since 2024.
+                </p>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="index.html#features" class="btn-primary">
+                        <i class="fas fa-rocket"></i> Explore Features
+                    </a>
+                    <a href="index.html" class="btn-outline">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+            <div class="fade-in fade-in-delay-2" style="display: flex; justify-content: center;">
+                <div style="width: 100%; max-width: 350px; aspect-ratio: 1/1; border-radius: 30px; background: rgba(255,255,255,0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 30px; text-align: center; animation: float 4s ease-in-out infinite;">
+                    <img src="logo-KAC-transparant.png" alt="KAC" style="width: 120px; height: 120px; margin-bottom: 16px;" class="pulse-animation">
+                    <div style="font-size: 24px; font-weight: 800; color: #a78bfa;">KongaliCoin</div>
+                    <div style="font-size: 14px; color: #6b7280; margin-top: 4px;">ERC-20 • Ethereum</div>
+                    <div style="margin-top: 16px; width: 100%; height: 3px; background: linear-gradient(135deg, #7c3aed, #4f46e5); border-radius: 4px;"></div>
+                    <div style="margin-top: 12px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+                        <span style="font-size: 12px; background: rgba(124,58,237,0.1); padding: 4px 12px; border-radius: 8px; color: #a78bfa;">🔥 Live</span>
+                        <span style="font-size: 12px; background: rgba(124,58,237,0.1); padding: 4px 12px; border-radius: 8px; color: #a78bfa;">⚡ Fast</span>
+                        <span style="font-size: 12px; background: rgba(124,58,237,0.1); padding: 4px 12px; border-radius: 8px; color: #a78bfa;">🔒 Secure</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================== -->
+<!-- MISSION -->
+<!-- ========================================== -->
+<section class="bg-dark">
+    <div class="container text-center">
+        <div class="reveal">
+            <div class="badge"><i class="fas fa-bullseye" style="margin-right: 6px;"></i> Our Mission</div>
+            <h2 class="text-4xl font-black text-white mb-3">🎯 <span style="color: #a78bfa;">Mission</span> &amp; Vision</h2>
+            <p class="text-xl text-gray-light mb-8" style="max-width: 700px; margin: 0 auto 40px;">
+                To make cryptocurrency accessible to everyone while maintaining the highest standards of security, compliance, and customer service. We believe in democratizing finance through blockchain technology.
+            </p>
+        </div>
+        
+        <div class="grid-3">
+            <div class="card-dark reveal" style="transition-delay: 0.1s; text-align: center;">
+                <div class="mission-icon"><i class="fas fa-lightbulb"></i></div>
+                <h3>Innovation</h3>
+                <p>Pioneering cutting-edge technology to deliver the best trading experience</p>
+            </div>
+            <div class="card-dark reveal" style="transition-delay: 0.15s; text-align: center;">
+                <div class="mission-icon"><i class="fas fa-shield-halved"></i></div>
+                <h3>Security</h3>
+                <p>Bank-level protection for all your digital assets and transactions</p>
+            </div>
+            <div class="card-dark reveal" style="transition-delay: 0.2s; text-align: center;">
+                <div class="mission-icon"><i class="fas fa-users"></i></div>
+                <h3>Community</h3>
+                <p>Building a global community of crypto enthusiasts and traders</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================== -->
+<!-- OUR JOURNEY -->
+<!-- ========================================== -->
+<section class="bg-dark-2">
+    <div class="container">
+        <div class="text-center reveal">
+            <div class="badge"><i class="fas fa-road" style="margin-right: 6px;"></i> Our Journey</div>
+            <h2 class="text-4xl font-black text-white mb-3">📈 <span style="color: #a78bfa;">Our Journey</span></h2>
+            <p class="text-lg text-gray mb-8" style="max-width: 600px; margin: 0 auto 40px;">From inception to global leader in cryptocurrency trading</p>
+        </div>
+        
+        <div class="grid-2">
+            <div class="journey-card reveal" style="transition-delay: 0.1s;">
+                <div class="step">1</div>
+                <h3>Founded in 2024</h3>
+                <p>Started with a vision to create the most user-friendly and secure cryptocurrency trading platform. Our founders, experienced in both finance and technology, identified the need for a platform that combines security with simplicity.</p>
+            </div>
+            <div class="journey-card reveal" style="transition-delay: 0.15s;">
+                <div class="step">2</div>
+                <h3>Rapid Growth</h3>
+                <p>Within months, we grew to serve over 10 million users worldwide. Our commitment to low fees, fast execution, and exceptional customer service drove unprecedented adoption across 150+ countries.</p>
+            </div>
+            <div class="journey-card reveal" style="transition-delay: 0.2s;">
+                <div class="step">3</div>
+                <h3>Global Expansion</h3>
+                <p>Established offices and data centers across 30+ locations globally to ensure low-latency trading and 24/7 support in multiple languages. Our infrastructure handles over $50 billion in daily trading volume.</p>
+            </div>
+            <div class="journey-card reveal" style="transition-delay: 0.25s;">
+                <div class="step">4</div>
+                <h3>Innovation Leader</h3>
+                <p>Continuously launching innovative products including advanced trading tools, staking services, NFT marketplace, and DeFi integration. We're shaping the future of digital finance.</p>
+            </div>
+        </div>
+        
+        <!-- STATS -->
+        <div class="stats-bar reveal" style="margin-top: 40px;">
+            <div class="stat-item">
+                <div class="stat-number">10<span class="plus">M+</span></div>
+                <div class="stat-label"><i class="fas fa-users" style="margin-right: 4px;"></i> Active Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">350<span class="plus">+</span></div>
+                <div class="stat-label"><i class="fas fa-coins" style="margin-right: 4px;"></i> Cryptocurrencies</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">$50<span class="plus">B+</span></div>
+                <div class="stat-label"><i class="fas fa-chart-line" style="margin-right: 4px;"></i> Daily Volume</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">150<span class="plus">+</span></div>
+                <div class="stat-label"><i class="fas fa-globe" style="margin-right: 4px;"></i> Countries</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================== -->
+<!-- WHY CHOOSE US -->
+<!-- ========================================== -->
+<section class="bg-dark">
+    <div class="container">
+        <div class="text-center reveal">
+            <div class="badge"><i class="fas fa-star" style="margin-right: 6px;"></i> Why Choose Us</div>
+            <h2 class="text-4xl font-black text-white mb-3">🌟 Why <span style="color: #a78bfa;">Choose Us</span>?</h2>
+            <p class="text-lg text-gray mb-8" style="max-width: 600px; margin: 0 auto 40px;">The reasons why millions trust KongaliCoin for their crypto journey</p>
+        </div>
+        
+        <div class="grid-3">
+            <div class="card-dark reveal" style="transition-delay: 0.1s; text-align: left;">
+                <div class="icon-wrapper"><i class="fas fa-user-check"></i></div>
+                <h3>Trusted by Millions</h3>
+                <p>Join over 10 million users who trust KongaliCoin for their cryptocurrency trading needs.</p>
+            </div>
+            <div class="card-dark reveal" style="transition-delay: 0.15s; text-align: left;">
+                <div class="icon-wrapper"><i class="fas fa-gavel"></i></div>
+                <h3>Regulated &amp; Compliant</h3>
+                <p>Fully licensed and regulated in multiple jurisdictions with strict compliance standards.</p>
+            </div>
+            <div class="card-dark reveal" style="transition-delay: 0.2s; text-align: left;">
+                <div class="icon-wrapper"><i class="fas fa-headset"></i></div>
+                <h3>24/7 Support</h3>
+                <p>Round-the-clock customer support in multiple languages to assist you anytime, anywhere.</p>
+            </div>
+            <div class="card-dark reveal" style="transition-delay: 0.25s; text-align: left;">
+                <div class="icon-wrapper"><i class="fas fa-chart-simple"></i></div>
+                <h3>Advanced Tools</h3>
+                <p>Professional-grade trading tools, real-time charts, and advanced order types for all skill levels.</p>
+            </div>
+            <div class="card-dark reveal" style="transition-delay: 0.3s; text-align: left;">
+                <div class="icon-wrapper"><i class="fas fa-water"></i></div>
+                <h3>Deep Liquidity</h3>
+                <p>Access deep liquidity pools for tight spreads and better execution prices on all trades.</p>
+            </div>
+            <div class="card-dark reveal" style="transition-delay: 0.35s; text-align: left;">
+                <div class="icon-wrapper"><i class="fas fa-mobile-screen-button"></i></div>
+                <h3>Mobile Trading</h3>
+                <p>Trade on the go with our award-winning mobile apps for iOS and Android devices.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================== -->
+<!-- CTA -->
+<!-- ========================================== -->
+<section class="bg-dark-2">
+    <div class="container text-center">
+        <div class="reveal">
+            <div class="cta-box">
+                <div style="font-size: 48px; margin-bottom: 12px;">🚀</div>
+                <h2 class="text-4xl font-black text-white mb-4">Ready to Get Started?</h2>
+                <p class="text-lg text-gray-light mb-8" style="max-width: 500px; margin: 0 auto 30px;">
+                    Join millions of traders and investors who trust KongaliCoin. Start your crypto journey today.
+                </p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="index.html" class="btn-primary">
+                        <i class="fas fa-rocket"></i> Get Started
+                    </a>
+                    <a href="index.html#features" class="btn-outline">
+                        <i class="fas fa-star"></i> Explore Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================== -->
+<!-- FOOTER -->
+<!-- ========================================== -->
+<footer>
+    <div class="container">
+        <div class="logo" style="justify-content: center; margin-bottom: 8px;">
+            <img src="logo-KAC-transparant.png" alt="KAC" style="height: 36px;">
+            <span class="logo-text">KongaliCoin</span>
+        </div>
+        <p style="color: #a78bfa; font-weight: 600; font-size: 15px;">The Future of Crypto Trading</p>
+        <div class="footer-divider"></div>
+        <div class="footer-social">
+            <a href="https://github.com/kongali1720/KongPay" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+            <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+        </div>
+        <div class="footer-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="bank-level-security.html"><i class="fas fa-shield-halved"></i> Security</a>
+            <a href="https://etherscan.io/token/0xe71185E2F039013993F2Bc7Da8e51B63E40B063D" target="_blank"><i class="fas fa-search"></i> Etherscan</a>
+            <a href="https://github.com/kongali1720/KongPay" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            <a href="mailto:hallo@kongali1720.co.id"><i class="fas fa-envelope"></i> Email</a>
+        </div>
+        <p style="margin-top: 16px; font-size: 13px; opacity: 0.5;">
+            &copy; 2026 <span style="color: #a78bfa;">KongPay</span>. All rights reserved.
+        </p>
+        <p style="font-size: 12px; opacity: 0.3; margin-top: 4px;">
+            <i class="fas fa-rocket" style="color: #a78bfa;"></i> Built with ❤️ by Kongali1720
+        </p>
+    </div>
+</footer>
+
+<script>
+    // ===== SCROLL REVEAL =====
+    document.addEventListener('DOMContentLoaded', function() {
+        const reveals = document.querySelectorAll('.reveal');
+        function checkReveal() {
+            const windowHeight = window.innerHeight;
+            const revealPoint = 120;
+            reveals.forEach(el => {
+                const revealTop = el.getBoundingClientRect().top;
+                if (revealTop < windowHeight - revealPoint) {
+                    el.classList.add('active');
+                }
+            });
+        }
+        setTimeout(checkReveal, 200);
+        window.addEventListener('scroll', checkReveal);
+        window.addEventListener('resize', checkReveal);
+    });
+</script>
+
+</body>
+</html>
