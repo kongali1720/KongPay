@@ -91,3 +91,8 @@ ssl/
 *.bak
 *.tar.gz
 *.zip
+
+# Kecualikan file .example dari aturan .env.* di atas
+!.env.example
+!.env.crypto.example
+!.env.fiat.example
