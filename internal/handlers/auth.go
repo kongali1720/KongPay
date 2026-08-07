@@ -2,9 +2,11 @@ package handlers
 
 import (
     "net/http"
+
     "github.com/gin-gonic/gin"
 )
 
+// Register handles user registration
 func Register(c *gin.Context) {
     var req struct {
         Username string `json:"username"`
@@ -25,6 +27,7 @@ func Register(c *gin.Context) {
     })
 }
 
+// Login handles user login
 func Login(c *gin.Context) {
     var req struct {
         Username string `json:"username"`

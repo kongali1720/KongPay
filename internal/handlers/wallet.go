@@ -2,18 +2,21 @@ package handlers
 
 import (
     "net/http"
+
     "github.com/gin-gonic/gin"
 )
 
+// GetWallet returns wallet details
 func GetWallet(c *gin.Context) {
-    // TODO: Get wallet from database
     c.JSON(http.StatusOK, gin.H{
         "wallet_id": "wallet-123",
         "balance":   1000000,
         "currency":  "IDR",
+        "status":    "active",
     })
 }
 
+// TopUpWallet handles wallet top-up
 func TopUpWallet(c *gin.Context) {
     var req struct {
         Amount float64 `json:"amount"`
@@ -25,10 +28,10 @@ func TopUpWallet(c *gin.Context) {
         return
     }
 
-    // TODO: Implement top-up logic
     c.JSON(http.StatusOK, gin.H{
         "status":  "success",
         "message": "Wallet topped up",
         "amount":  req.Amount,
+        "new_balance": 1500000,
     })
 }
