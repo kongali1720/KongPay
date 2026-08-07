@@ -7,6 +7,7 @@ import (
     "time"
 
     "github.com/gin-gonic/gin"
+    "github.com/kongali1720/KongPay/internal/models"
     "github.com/kongali1720/KongPay/internal/payment/provider"
     "github.com/kongali1720/KongPay/internal/payment/router"
     "github.com/kongali1720/KongPay/internal/services"
@@ -24,7 +25,6 @@ func NewPaymentHandler(paymentRouter *router.PaymentRouter, txService *services.
     }
 }
 
-// ProcessPayment handles payment requests
 func (h *PaymentHandler) ProcessPayment(w http.ResponseWriter, r *http.Request) {
     var req struct {
         Amount     float64 `json:"amount"`
@@ -54,11 +54,33 @@ func (h *PaymentHandler) ProcessPayment(w http.ResponseWriter, r *http.Request) 
         return
     }
 
+    // SAVE TRANSACTION
+    tx := &models.Transaction{
+        TransactionID:  resp.TransactionID,
+        ProviderTxID:   resp.ProviderTxID,
+        Amount:         req.Amount,
+        Currency:       req.Currency,
+        Method:         req.Method,
+        Status:         "PENDING",
+        CustomerID:     req.CustomerID,
+        MerchantID:     req.MerchantID,
+        RedirectURL:    resp.RedirectURL,
+        QRCode:         resp.QRCode,
+        VirtualAccount: resp.VirtualAccount,
+        CreatedAt:      time.Now(),
+        UpdatedAt:      time.Now(),
+    }
+
+    if err := h.txService.SaveTransaction(r.Context(), tx); err != nil {
+        log.Printf("❌ SaveTransaction error: %v", err)
+    } else {
+        log.Printf("✅ Transaction saved: %s", resp.TransactionID)
+    }
+
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(resp)
 }
 
-// Webhook handles payment webhooks
 func (h *PaymentHandler) Webhook(w http.ResponseWriter, r *http.Request) {
     var payload map[string]interface{}
     if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
@@ -71,13 +93,19 @@ func (h *PaymentHandler) Webhook(w http.ResponseWriter, r *http.Request) {
 
     log.Printf("📨 Webhook received: TX=%s, Status=%s", transactionID, status)
 
+    // Update status
     if err := h.txService.UpdateTransactionStatus(r.Context(), transactionID, status); err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
+        log.Printf("❌ Failed to update status: %v", err)
+    } else {
+        log.Printf("✅ Status updated: %s -> %s", transactionID, status)
     }
 
-    if status == "SUCCESS" {
-        go h.txService.TriggerSettlement(r.Context(), transactionID)
+    // 🔥 TRIGGER SETTLEMENT
+    if status == "SUCCESS" || status == "COMPLETED" {
+        log.Printf("💰💰💰 TRIGGERING SETTLEMENT FOR: %s", transactionID)
+        h.txService.TriggerSettlement(r.Context(), transactionID)
+    } else {
+        log.Printf("⚠️ Settlement NOT triggered (status: %s)", status)
     }
 
     w.Header().Set("Content-Type", "application/json")
@@ -88,7 +116,6 @@ func (h *PaymentHandler) Webhook(w http.ResponseWriter, r *http.Request) {
     })
 }
 
-// Transfer handles transfer requests (Gin handler)
 func (h *PaymentHandler) Transfer(c *gin.Context) {
     var req struct {
         FromWalletID string  `json:"from_wallet_id"`
@@ -102,7 +129,6 @@ func (h *PaymentHandler) Transfer(c *gin.Context) {
         return
     }
 
-    // TODO: Implement transfer logic
     c.JSON(http.StatusOK, gin.H{
         "status":      "success",
         "message":     "Transfer processed",

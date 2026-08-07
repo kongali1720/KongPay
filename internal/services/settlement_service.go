@@ -22,37 +22,31 @@ type SettlementTask struct {
 }
 
 type SettlementService struct {
-    db            *pgxpool.Pool
-    mu            sync.RWMutex
-    transactions  map[string]*SettlementTask
-    workerCount   int
-    taskQueue     chan *SettlementTask
+    db           *pgxpool.Pool
+    mu           sync.RWMutex
+    transactions map[string]*SettlementTask
+    workerCount  int
+    taskQueue    chan *SettlementTask
 }
 
 func NewSettlementService(db *pgxpool.Pool) *SettlementService {
-    if db == nil {
-        log.Println("⚠️ SettlementService: DB is nil, settlements will NOT be saved to database!")
-    } else {
-        log.Println("✅ SettlementService: DB connected")
-    }
-
     s := &SettlementService{
-        db:            db,
+        db:           db,
         transactions: make(map[string]*SettlementTask),
-        workerCount:   3,
-        taskQueue:     make(chan *SettlementTask, 1000),
+        workerCount:  3,
+        taskQueue:    make(chan *SettlementTask, 100),
     }
 
     for i := 0; i < s.workerCount; i++ {
         go s.worker(i)
     }
 
+    log.Println("✅ Settlement service initialized")
     return s
 }
 
 func (s *SettlementService) AddTask(ctx context.Context, transactionID string, amount float64, currency string, customerID string, merchantID string) error {
-    s.mu.Lock()
-    defer s.mu.Unlock()
+    log.Printf("📥 Adding settlement task: %s", transactionID)
 
     task := &SettlementTask{
         TransactionID: transactionID,
@@ -64,30 +58,35 @@ func (s *SettlementService) AddTask(ctx context.Context, transactionID string, a
         CreatedAt:     time.Now(),
     }
 
+    s.mu.Lock()
     s.transactions[transactionID] = task
-    s.taskQueue <- task
+    s.mu.Unlock()
 
-    // Save to database (synchronous agar terlihat errornya)
+    s.taskQueue <- task
+    log.Printf("✅ Task added to queue: %s", transactionID)
+
+    // Save to database
     if s.db != nil {
-        query := `
-            INSERT INTO settlements (transaction_id, amount, currency, customer_id, merchant_id, status, created_at)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
-        `
-        _, err := s.db.Exec(ctx, query,
-            task.TransactionID, task.Amount, task.Currency,
-            task.CustomerID, task.MerchantID, task.Status, task.CreatedAt,
-        )
-        if err != nil {
-            log.Printf("❌ Failed to save settlement to DB: %v", err)
-            return err
-        }
-        log.Printf("✅ Settlement saved to DB: %s", transactionID)
-    } else {
-        log.Printf("⚠️ DB is nil, settlement NOT saved to database: %s", transactionID)
+        go s.saveToDB(ctx, task)
     }
 
-    log.Printf("📥 Settlement task added: %s (Amount: %.2f %s)", transactionID, amount, currency)
     return nil
+}
+
+func (s *SettlementService) saveToDB(ctx context.Context, task *SettlementTask) {
+    query := `
+        INSERT INTO settlements (transaction_id, amount, currency, customer_id, merchant_id, status, created_at)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `
+    _, err := s.db.Exec(ctx, query,
+        task.TransactionID, task.Amount, task.Currency,
+        task.CustomerID, task.MerchantID, task.Status, task.CreatedAt,
+    )
+    if err != nil {
+        log.Printf("❌ Failed to save settlement to DB: %v", err)
+    } else {
+        log.Printf("✅ Settlement saved to DB: %s", task.TransactionID)
+    }
 }
 
 func (s *SettlementService) worker(id int) {
@@ -96,43 +95,33 @@ func (s *SettlementService) worker(id int) {
     for task := range s.taskQueue {
         log.Printf("🔄 Worker %d processing settlement: %s", id, task.TransactionID)
 
-        if err := s.processSettlement(task); err != nil {
-            log.Printf("❌ Settlement failed for %s: %v", task.TransactionID, err)
-            task.Status = "FAILED"
-            task.Error = err.Error()
-        } else {
-            log.Printf("✅ Settlement completed for %s", task.TransactionID)
-            task.Status = "COMPLETED"
-            task.CompletedAt = time.Now()
-        }
+        // Simulate processing
+        time.Sleep(2 * time.Second)
 
-        // Update DB status
-        if s.db != nil {
-            query := `
-                UPDATE settlements 
-                SET status = $1, completed_at = $2, error = $3
-                WHERE transaction_id = $4
-            `
-            _, err := s.db.Exec(context.Background(), query,
-                task.Status, task.CompletedAt, task.Error, task.TransactionID,
-            )
-            if err != nil {
-                log.Printf("❌ Failed to update settlement status: %v", err)
-            } else {
-                log.Printf("✅ Settlement status updated in DB: %s -> %s", task.TransactionID, task.Status)
-            }
-        }
+        task.Status = "COMPLETED"
+        task.CompletedAt = time.Now()
 
         s.mu.Lock()
         s.transactions[task.TransactionID] = task
         s.mu.Unlock()
-    }
-}
 
-func (s *SettlementService) processSettlement(task *SettlementTask) error {
-    // TODO: Implement real settlement logic
-    time.Sleep(2 * time.Second)
-    return nil
+        // Update DB
+        if s.db != nil {
+            query := `
+                UPDATE settlements 
+                SET status = $1, completed_at = $2
+                WHERE transaction_id = $3
+            `
+            _, err := s.db.Exec(context.Background(), query,
+                task.Status, task.CompletedAt, task.TransactionID,
+            )
+            if err != nil {
+                log.Printf("❌ Failed to update settlement status: %v", err)
+            } else {
+                log.Printf("✅ Settlement completed: %s", task.TransactionID)
+            }
+        }
+    }
 }
 
 func (s *SettlementService) GetStatus(transactionID string) (*SettlementTask, error) {

@@ -1,59 +1,48 @@
 package database
 
 import (
-    "database/sql"
+    "context"
     "fmt"
     "log"
-    "os"
+    "time"
 
-    _ "github.com/lib/pq"
+    "github.com/jackc/pgx/v5/pgxpool"
 )
 
-type DB struct {
-    *sql.DB
+type Config struct {
+    Host     string
+    Port     string
+    User     string
+    Password string
+    DBName   string
+    SSLMode  string
 }
 
-func NewConnection() (*DB, error) {
-    host := os.Getenv("DB_HOST")
-    if host == "" {
-        host = "localhost"
-    }
-    port := os.Getenv("DB_PORT")
-    if port == "" {
-        port = "5432"
-    }
-    user := os.Getenv("DB_USER")
-    if user == "" {
-        user = "postgres"
-    }
-    password := os.Getenv("DB_PASSWORD")
-    dbname := os.Getenv("DB_NAME")
-    if dbname == "" {
-        dbname = "kongpay"
-    }
-    sslmode := os.Getenv("DB_SSL_MODE")
-    if sslmode == "" {
-        sslmode = "disable"
-    }
-
-    connStr := fmt.Sprintf(
+func NewPostgresDB(cfg Config) (*pgxpool.Pool, error) {
+    dsn := fmt.Sprintf(
         "host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-        host, port, user, password, dbname, sslmode,
+        cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode,
     )
 
-    db, err := sql.Open("postgres", connStr)
+    config, err := pgxpool.ParseConfig(dsn)
     if err != nil {
-        return nil, err
+        return nil, fmt.Errorf("failed to parse config: %w", err)
     }
 
-    if err := db.Ping(); err != nil {
-        return nil, err
+    config.MaxConns = 10
+    config.MinConns = 2
+    config.MaxConnLifetime = time.Hour
+    config.MaxConnIdleTime = 30 * time.Minute
+
+    pool, err := pgxpool.NewWithConfig(context.Background(), config)
+    if err != nil {
+        return nil, fmt.Errorf("failed to connect: %w", err)
+    }
+
+    if err := pool.Ping(context.Background()); err != nil {
+        return nil, fmt.Errorf("failed to ping: %w", err)
     }
 
     log.Println("✅ PostgreSQL connected")
-    return &DB{db}, nil
-}
-
-func (db *DB) Close() error {
-    return db.DB.Close()
+    return pool, nil
 }

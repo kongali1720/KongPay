@@ -12,6 +12,7 @@ import (
 type TransactionService struct {
     repo              *repositories.TransactionRepository
     settlementService *SettlementService
+    db                *pgxpool.Pool
 }
 
 func NewTransactionService(db *pgxpool.Pool) *TransactionService {
@@ -20,12 +21,13 @@ func NewTransactionService(db *pgxpool.Pool) *TransactionService {
         txRepo = repositories.NewTransactionRepository(db)
         log.Println("✅ Transaction repository initialized with DB")
     } else {
-        log.Println("⚠️ Database is nil!")
+        log.Println("⚠️  Database is nil, transactions will NOT be saved!")
     }
 
     return &TransactionService{
         repo:              txRepo,
         settlementService: NewSettlementService(db),
+        db:                db,
     }
 }
 
@@ -65,7 +67,7 @@ func (s *TransactionService) GetTransaction(ctx context.Context, transactionID s
         return nil, err
     }
     if tx == nil {
-        log.Printf("❌ Transaction NOT FOUND in DB: %s", transactionID)
+        log.Printf("❌ Transaction NOT found in DB: %s", transactionID)
         return nil, nil
     }
     log.Printf("✅ Transaction found: %s (Status: %s)", tx.TransactionID, tx.Status)
@@ -75,30 +77,29 @@ func (s *TransactionService) GetTransaction(ctx context.Context, transactionID s
 func (s *TransactionService) TriggerSettlement(ctx context.Context, transactionID string) {
     log.Printf("💰💰💰 TRIGGERING SETTLEMENT FOR: %s", transactionID)
 
+    if s.repo == nil {
+        log.Printf("❌ REPO NIL: Cannot trigger settlement for %s", transactionID)
+        return
+    }
+
     tx, err := s.GetTransaction(ctx, transactionID)
     if err != nil {
         log.Printf("❌ Error getting transaction: %v", err)
         return
     }
     if tx == nil {
-        log.Printf("❌❌❌ Transaction NOT FOUND: %s", transactionID)
+        log.Printf("❌ Transaction NOT found: %s", transactionID)
         return
     }
 
-    s.TriggerSettlementDirect(ctx, transactionID, tx.Amount, tx.Currency, tx.CustomerID, tx.MerchantID)
-}
-
-func (s *TransactionService) TriggerSettlementDirect(ctx context.Context, transactionID string, amount float64, currency string, customerID string, merchantID string) error {
-    log.Printf("💰 Adding settlement task for %s (Amount: %.2f %s)", transactionID, amount, currency)
+    log.Printf("💰 Settlement: %s Amount: %.2f %s", transactionID, tx.Amount, tx.Currency)
     
-    if err := s.settlementService.AddTask(ctx, transactionID, amount, currency, customerID, merchantID); err != nil {
+    if err := s.settlementService.AddTask(ctx, transactionID, tx.Amount, tx.Currency, tx.CustomerID, tx.MerchantID); err != nil {
         log.Printf("❌ Failed to add settlement task: %v", err)
-        return err
+        return
     }
 
-    s.UpdateTransactionStatus(ctx, transactionID, "SETTLING")
     log.Printf("✅✅✅ Settlement triggered for: %s", transactionID)
-    return nil
 }
 
 func (s *TransactionService) GetSettlementStatus(transactionID string) (*SettlementTask, error) {
